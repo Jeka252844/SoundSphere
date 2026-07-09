@@ -9,10 +9,11 @@ class User(AbstractUser):
         ('user', 'Пользователь'),
     ]
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name=_("Аватар"))
-    phone_number = models.CharField(max_length=12, validators=[], verbose_name=_('номер телефона'))
+    email = models.EmailField(unique=True, null=True)
+    phone_number = models.CharField(max_length=12, unique=True, null=True, verbose_name=_('номер телефона'))
     bio = models.TextField(max_length=300, blank=True, verbose_name=_('Биография'))
     is_artist = models.BooleanField(default=False, verbose_name=_('Артист'))
-
+    user_role  = models.CharField(max_length=15, default='user', choices=ROLE_CHOICES, verbose_name=_("Роль"))
     class Meta:
         verbose_name = _("Пользователь")
         verbose_name_plural = _("Пользователи")

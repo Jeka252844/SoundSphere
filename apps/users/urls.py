@@ -1,5 +1,5 @@
 from django.urls import path
-from users.views import (UserListAPIView, UserCreateAPIView, UserRetrieveAPIView, 
+from apps.users.views import (UserListAPIView, UserCreateAPIView, UserRetrieveAPIView, 
 UserPasswordUpdateAPIView, UserDeleteAPIView, UserUpdateAPIView)
 
 app_name= 'users'

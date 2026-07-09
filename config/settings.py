@@ -154,7 +154,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": ('django_filters.rest_framework.DjangoFiltersBackend',),
+    "DEFAULT_FILTER_BACKENDS": ('django_filters.rest_framework.DjangoFilterBackend',),
     "DEFAULT_AUTHENTICATION_CLASSES": ('rest_framework_simplejwt.authentication.JWTAuthentication',),
     # "DEFAULT_PERMISSION_CLASSES": ('rest_framework.permissions.IsAuthenticated',),
     "DEFAULT_PERMISSION_CLASSES": ('rest_framework.permissions.AllowAny',),
@@ -163,5 +163,4 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
-    "TOKEN_OBTAIN_SERIALIZER": 'users.user_serializer.UserTokenObtainSerializer',
 }

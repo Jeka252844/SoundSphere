@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,12 +32,28 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # base
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'django_filters',
+    # 'corsheaders',
+    'drf_yasg',
+    # 'channels',
+
+    # apps
+    'apps.users',
+    # 'apps.player',
+    # 'apps.social',
+    # 'apps.tracks',
+    # 'apps.analitics',
+
 ]
 
 MIDDLEWARE = [
@@ -79,6 +96,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default':{
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'NAME': 'SoundSphere',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -102,9 +130,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -115,3 +143,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATiC_DIRS = [
+    BASE_DIR / 'static'
+]
+
+AUTH_USER_MODEL = 'users.User'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS": ('django_filters.rest_framework.DjangoFilterBackend',),
+    "DEFAULT_AUTHENTICATION_CLASSES": ('rest_framework_simplejwt.authentication.JWTAuthentication',),
+    # "DEFAULT_PERMISSION_CLASSES": ('rest_framework.permissions.IsAuthenticated',),
+    "DEFAULT_PERMISSION_CLASSES": ('rest_framework.permissions.AllowAny',),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+}

@@ -34,12 +34,18 @@ class ArtistUpdateAPIView(UpdateAPIView):
     permission_classes = (IsOwner, )
     
     def get_object(self):
-        user = self.request.user
-        return User.objects.get(id = user.id)
+        if self.request.user.user_role == 'admin':
+            return super().get_object()
+        return self.request.user.artist
 
 class ArtistDeleteAPIView(DestroyAPIView):
     queryset = Artist.objects.all()
     permission_classes = (IsOwner | IsAdmin, )
+
+    def get_object(self):
+        if self.request.user.user_role == 'admin':
+            return super().get_object()  
+        return self.request.user.artist
 
 class GetTopArtistsView(ListAPIView):
     serializer_class = ArtistSerializer

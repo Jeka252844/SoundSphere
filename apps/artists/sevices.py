@@ -7,13 +7,13 @@ class ArtistService:
     def get_top_artists(page=1, limit=50):
         offset = (page-1) * limit
         return Artist.objects.annotate(
-            followers_count = Count('follower')
+            followers_count = Count('followers')
         ).order_by('-followers_count')[offset:offset + limit]
     
     @staticmethod
     def search_artist(query='', page = 1, limit = 50):
         offset = (page-1) * limit
         return Artist.objects.filter(name__icontains = query).annotate(
-            followers_count = Count('follower')
+            followers_count = Count('followers')
         ).order_by('-followers_count')[offset:offset + limit]
     

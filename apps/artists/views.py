@@ -3,9 +3,11 @@ CreateAPIView, UpdateAPIView, DestroyAPIView)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.artists.models import Artist, Album
-from apps.users.models import User
+from apps.artists.sevices import ArtistService
 from apps.artists.artist_serializer import (ArtistSerializer, 
 ArtistCreateSerializer, ArtistUpdateSerializer)
+
+from apps.users.models import User
 from apps.users.permissions import IsOwner, IsAdmin
 
 class ArtistListAPIView(ListAPIView):
@@ -38,3 +40,20 @@ class ArtistUpdateAPIView(UpdateAPIView):
 class ArtistDeleteAPIView(DestroyAPIView):
     queryset = Artist.objects.all()
     permission_classes = (IsOwner | IsAdmin, )
+
+class GetTopArtistsView(ListAPIView):
+    serializer_class = ArtistSerializer
+    permission_classes = (AllowAny, )
+
+    def get_queryset(self):
+        page = self.request.GET.get('page', 1)
+        return ArtistService.get_top_artists(int(page))
+
+class SearchAristsView(ListAPIView):
+    serializer_class = ArtistSerializer
+    permission_classes = (AllowAny, )
+
+    def get_queryset(self):
+        query = self.request.GET.get('query', '')
+        page = self.request.GET.get('page', 1)
+        return ArtistService.search_artist(query, int(page))

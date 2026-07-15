@@ -40,7 +40,7 @@ class TopGenreTracksViews(ListAPIView):
             return TrackService.get_top_by_genre(genre_name, int(page))
         return TrackService.get_top_tracks(int(page))
     
-class GetTracksView(ListAPIView):
+class SearchTracksView(ListAPIView):
     serializer_class = TrackSerializer
     permission_classes = (AllowAny, )
     

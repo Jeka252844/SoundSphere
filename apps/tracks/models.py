@@ -30,6 +30,7 @@ class Track(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Создан"))
 
     class Meta:
+        unique_together = ['artist', 'title']
         verbose_name = _("Трэк")
         verbose_name_plural = _("Треки")
         indexes = [

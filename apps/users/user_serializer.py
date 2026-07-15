@@ -17,7 +17,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'email', 'phone_number', 'user_role', 'is_active')
+        fields = ('username', 'password', 'email', 'phone_number', 'user_role', 'is_active', 'is_artist')
 
         validators = [
             PasswordValidator(field='password')
@@ -38,7 +38,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'phone_number', 'username', 'user_role', 'is_active')
+        fields = ('email', 'phone_number', 'username', 'user_role', 'is_active', 'is_artist')
 
 
 class UserPasswordSerializer(serializers.Serializer):

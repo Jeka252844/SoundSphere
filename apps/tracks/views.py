@@ -5,11 +5,6 @@ from apps.tracks.models import Track, Genre
 from apps.users.permissions import IsArtist, IsModerator, IsAdmin, IsOwner
 from apps.tracks.track_serializer import TrackSerializer, TrackCreateSerializer, TrackUpdateSerializer
 
-class TrackListAPIView(ListAPIView):
-    queryset = Track.objects.all()
-    serializer_class = TrackSerializer
-    permission_classes = (AllowAny, )
-
 class TrackDetailAPIView(RetrieveAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
@@ -20,11 +15,14 @@ class TrackCreateAPIView(CreateAPIView):
     serializer_class = TrackCreateSerializer
     permission_classes = (IsArtist, )
 
+    def perform_create(self, serializer):
+        serializer.save(artist=self.user.artist)
+
 class TrackUpdateAPIView(UpdateAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackUpdateSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (IsArtist, )
 
 class TrackDeleteAPIView(DestroyAPIView):
     queryset = Track.objects.all()
-    permission_classes = (AllowAny, )
+    permission_classes = (IsArtist | IsModerator, )

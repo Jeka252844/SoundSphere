@@ -1,6 +1,6 @@
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, 
+CreateAPIView, UpdateAPIView, DestroyAPIView)
 from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
 
 from apps.tracks.models import Track, Genre
 from apps.tracks.services import TrackService
@@ -18,7 +18,7 @@ class TrackCreateAPIView(CreateAPIView):
     permission_classes = (IsArtist, )
 
     def perform_create(self, serializer):
-        serializer.save(artist=self.user.artist)
+        serializer.save(artist=self.request.user.artist)
 
 class TrackUpdateAPIView(UpdateAPIView):
     queryset = Track.objects.all()

@@ -25,6 +25,8 @@ urlpatterns = [
 
     # app urls
     path('users/', include('apps.users.urls', namespace='users')),
+    path('tracks/', include('apps.tracks.urls', namespace='tracks')),
+    path('artists/', include('apps.artists.urls', namespace='artists')),
 
     # token
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair')

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
+from apps.artists.models import Artist
+
 class User(AbstractUser):
     ROLE_CHOICES = [
         ('admin', 'Администратор'),
@@ -40,7 +42,7 @@ class PlayList(models.Model):
 
 class Follow(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', verbose_name=_('Подписчик'))
-    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers', verbose_name=_("Подписан на"))
+    following = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='followers', verbose_name=_("Подписан на"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
     
     class Meta:

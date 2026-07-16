@@ -1,7 +1,8 @@
 from django.urls import path
 from apps.users.views import (UserListAPIView, UserCreateAPIView, UserDetailAPIView, 
 UserPasswordUpdateAPIView, UserDeleteAPIView, UserUpdateAPIView, FollowToggleAPIView,
-PlayListDetailAPIView, PlayListCreateAPIView, PlayListsUpdateAPIView, PlayListDeleteAPIView)
+PlayListDetailAPIView, PlayListCreateAPIView, PlayListsUpdateAPIView, PlayListDeleteAPIView,
+PlayListAddTrackAPIView, PlayListRemoveTrackAPIView)
 
 app_name= 'users'
 
@@ -19,7 +20,9 @@ urlpatterns = [
 
     # playlist
     path('playlist/<int:pk>/', PlayListDetailAPIView.as_view(), name='playlist_detail'),
-    path('playlist/create/', PlayListCreateAPIView.as_view(), name='palylist_create'),
+    path('playlist/create/', PlayListCreateAPIView.as_view(), name='playlist_create'),
     path('playlist/<int:pk>/update/', PlayListsUpdateAPIView.as_view(), name='playlist_update'),
     path('playlist/<int:pk>/delete/', PlayListDeleteAPIView.as_view(), name='playlist_delete'),
+    path('playlist/<int:pk>/add/', PlayListAddTrackAPIView.as_view(), name='playlist_add'),
+    path('playlist/<int:pk>/remove/', PlayListRemoveTrackAPIView.as_view(), name='playlist_remove'),
 ]

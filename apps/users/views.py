@@ -5,9 +5,11 @@ from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 
-from apps.users.models import User, Follow, PlayList
+from apps.users.models import User, Follow, PlayList, PlayListTrack
 from apps.artists.models import Artist
+from apps.tracks.models import Track
 from apps.users.permissions import IsAdmin, IsModerator, IsOwner
+
 from apps.users.user_serializer import (UserSerializer, UserCreateSerializer,
  UserUpdateSerializer, UserPasswordSerializer)
 from apps.users.playlist_serializer import (PlayListSerializer,
@@ -99,14 +101,37 @@ class PlayListCreateAPIView(CreateAPIView):
 class PlayListsUpdateAPIView(UpdateAPIView):
     queryset = PlayList.objects.all()
     serializer_class = PlayListUpdateSerializer
-    permission_classes = (IsOwner, )
+    permission_classes = (IsAuthenticated, )
 
     def get_object(self):
         return PlayList.objects.get(id = self.kwargs['pk'],user=self.request.user)
     
 class PlayListDeleteAPIView(DestroyAPIView):
     queryset = PlayList.objects.all()
-    permission_classes = (IsOwner | IsAdmin, )
+    permission_classes = (IsAuthenticated | IsAdmin, )
 
     def get_object(self):
         return PlayList.objects.get(id = self.kwargs['pk'], user=self.request.user)
+    
+class PlayListAddTrackAPIView(GenericAPIView):
+    queryset = PlayList.objects.all()
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request, pk):
+        playlist = get_object_or_404(PlayList, pk=pk, user=request.user)
+        track = get_object_or_404(Track, pk=request.data.get('track_id'))
+        obj, created = PlayListTrack.objects.get_or_create(playlist=playlist, track=track)
+        if not created:
+            return Response({'error': 'Трек уже в плейлисте'})
+        return Response({'status': "added"})
+    
+class PlayListRemoveTrackAPIView(GenericAPIView):
+    queryset = PlayList.objects.all()
+    permission_classes = (IsAuthenticated, )
+    def post(self, request, pk):
+        playlist = get_object_or_404(PlayList, pk=pk, user = request.user)
+        PlayListTrack.objects.filter(
+            playlist=playlist, 
+            track_id=request.data.get('track_id')
+        ).delete()
+        return Response({'status': 'removed'})

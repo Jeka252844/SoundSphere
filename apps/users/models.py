@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
 from apps.artists.models import Artist
+from apps.tracks.models import Track
 
 class User(AbstractUser):
     ROLE_CHOICES = [
@@ -16,6 +17,7 @@ class User(AbstractUser):
     bio = models.TextField(max_length=300, blank=True, verbose_name=_('Биография'))
     is_artist = models.BooleanField(default=False, verbose_name=_('Артист'))
     user_role  = models.CharField(max_length=15, default='user', choices=ROLE_CHOICES, verbose_name=_("Роль"))
+    
     class Meta:
         verbose_name = _("Пользователь")
         verbose_name_plural = _("Пользователи")
@@ -25,20 +27,34 @@ class User(AbstractUser):
         ]
         ordering = ['-date_joined']
 
+    def __str__(self) -> str:
+        return self.username
 
 class PlayList(models.Model):
-    name = models.CharField(max_length=200, verbose_name=_("Название плэйлиста"))
+    name = models.CharField(max_length=200, verbose_name=_("Название плейлиста"))
     user = models.ForeignKey(User, related_name='playlist', on_delete=models.CASCADE, verbose_name=_("Пользователь"))
     is_public = models.BooleanField(default=False, verbose_name=_("Публичный"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
 
     class Meta:
-        verbose_name = _("Плэйлист")
-        verbose_name_plural = _("Плайлисты")
+        verbose_name = _("плейлист")
+        verbose_name_plural = _("плейлисты")
         indexes = [
             models.Index(fields=['user', '-created_at'])
         ]
         ordering = ['-created_at']
+
+    def __str__(self) -> str:
+        return self.name
+
+class PlayListTrack(models.Model):
+    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='playlist_track', verbose_name="трек")
+    playlist = models.ForeignKey(PlayList, on_delete=models.CASCADE, related_name='playlist_track', verbose_name='плейлист')
+
+    class Meta:
+        verbose_name= 'Трэк в плейлисте'
+        verbose_name_plural = 'Треки в плейлисте'
+        unique_together = ['track', 'playlist']
 
 class Follow(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', verbose_name=_('Подписчик'))

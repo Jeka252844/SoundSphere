@@ -18,6 +18,15 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'password', 'email', 'phone_number', 'user_role', 'is_active', 'is_artist')
+        extra_kwargs = {
+            "password": {
+                "max_length":16, 
+                "min_length":8, 
+                "write_only":True, 
+                "required": True},
+            "email": {"required": False},
+            "phone_number": {"required": False}
+        }
 
         validators = [
             PasswordValidator(field='password')

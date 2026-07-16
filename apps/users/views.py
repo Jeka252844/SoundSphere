@@ -1,9 +1,11 @@
 from rest_framework.generics import (ListAPIView, CreateAPIView, GenericAPIView, 
     UpdateAPIView, DestroyAPIView, RetrieveAPIView)
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
-from apps.users.models import User
+from apps.users.models import User, Follow
+from apps.artists.models import Artist
 from apps.users.permissions import IsAdmin, IsModerator, IsOwner
 from apps.users.user_serializer import (UserSerializer, UserCreateSerializer,
  UserUpdateSerializer, UserPasswordSerializer)
@@ -57,3 +59,17 @@ class UserPasswordUpdateAPIView(GenericAPIView):
 class UserDeleteAPIView(DestroyAPIView):
     queryset = User.objects.all()
     permission_classes = (IsOwner | IsAdmin, )
+
+class FollowToggleAPIView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request, pk):
+        artist = get_object_or_404(Artist, pk=pk)
+        follow, created = Follow.objects.get_or_create(
+            follower = request.user,
+            following=artist
+        )
+        if not created:
+            follow.delete()
+            return Response({"status": 'unfollowed'})
+        return Response({"status": 'followed'})

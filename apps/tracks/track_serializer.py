@@ -16,8 +16,8 @@ class TrackCreateSerializer(serializers.ModelSerializer):
         fields = ('title', 'album', 'genre', 'cover', 'audio_file')
         extra_kwargs = {
             'title': {'required': True},
-            'album': {"queryset": Album.objects.all(), 'required': True},
-            'genre': {"queryset": Genre.objects.all(), 'required': True},
+            'album': {'required': True},
+            'genre': {'required': True},
             'audio_file': {'required': True},
             'cover': {'required': False},
         }

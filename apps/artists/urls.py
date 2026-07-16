@@ -2,7 +2,7 @@ from django.urls import path
 
 from apps.artists.views import (ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView,
 ArtistDeleteAPIView, ArtistUpdateAPIView, SearchAristsView, GetTopArtistsView,
-AlbumCreateAPIView, AlbumDetailAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView)
+AlbumCreateAPIView, AlbumDetailAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView, AlbumListAPIView)
 
 
 app_name = 'artists'
@@ -18,6 +18,7 @@ urlpatterns = [
     path('search/', SearchAristsView.as_view(), name='search_artists'),
 
     # album
+    path('album/', AlbumListAPIView.as_view(), name="album_list"),
     path('album/<int:pk>/', AlbumDetailAPIView.as_view(), name="album_detail"),
     path('album/create/', AlbumCreateAPIView.as_view(), name='album_create'),
     path('album/<int:pk>/update/', AlbumUpdateAPIView.as_view(), name='album_update'),

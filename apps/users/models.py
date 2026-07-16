@@ -31,12 +31,13 @@ class User(AbstractUser):
         return self.username
 
 class PlayList(models.Model):
-    name = models.CharField(max_length=200, verbose_name=_("Название плейлиста"))
+    title = models.CharField(max_length=200, verbose_name=_("Название плейлиста"))
     user = models.ForeignKey(User, related_name='playlist', on_delete=models.CASCADE, verbose_name=_("Пользователь"))
     is_public = models.BooleanField(default=False, verbose_name=_("Публичный"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
 
     class Meta:
+        unique_together = ['title', 'user']
         verbose_name = _("плейлист")
         verbose_name_plural = _("плейлисты")
         indexes = [

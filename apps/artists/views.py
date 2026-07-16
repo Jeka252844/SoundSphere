@@ -64,6 +64,10 @@ class SearchAristsView(ListAPIView):
         page = self.request.GET.get('page', 1)
         return ArtistService.search_artist(query, int(page))
     
+class AlbumListAPIView(ListAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    permission_classes = (IsModerator, )
 
 class AlbumDetailAPIView(RetrieveAPIView):
     queryset = Album.objects.all()

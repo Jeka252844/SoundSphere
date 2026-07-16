@@ -4,10 +4,10 @@ from apps.artists.models import Album
 from apps.tracks.track_serializer import TrackSerializer
 
 class AlbumSerializer(serializers.ModelSerializer):
-    track = TrackSerializer(many=True, read_only=True)
+    tracks = TrackSerializer(many=True, read_only=True)
     class Meta:
         model = Album
-        fields = ('title', 'artist', 'cover', 'release_data', 'tracks')
+        fields = ('title', 'artist', 'cover', 'release_date', 'tracks')
     
 class AlbumCreateSerializer(serializers.ModelSerializer):
     class Meta:

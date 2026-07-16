@@ -79,6 +79,11 @@ class FollowToggleAPIView(GenericAPIView):
             return Response({"status": 'unfollowed'})
         return Response({"status": 'followed'})
     
+class PlayListListAPIView(ListAPIView):
+    queryset = PlayList.objects.all()
+    serializer_class = PlayListSerializer
+    permission_classes = (IsModerator, )
+    
 class PlayListDetailAPIView(RetrieveAPIView):
     queryset = PlayList.objects.all()
     serializer_class = PlayListSerializer

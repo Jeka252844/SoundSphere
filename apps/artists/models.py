@@ -24,6 +24,7 @@ class Album(models.Model):
     release_date = models.DateField(null=True, blank=True, verbose_name=_("Релиз"))
 
     class Meta:
+        unique_together = ['title', 'artist']
         verbose_name = _("Альбом")
         verbose_name_plural = _("Альбомы")
         indexes = [

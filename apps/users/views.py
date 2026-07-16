@@ -2,13 +2,16 @@ from rest_framework.generics import (ListAPIView, CreateAPIView, GenericAPIView,
     UpdateAPIView, DestroyAPIView, RetrieveAPIView)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 
-from apps.users.models import User, Follow
+from apps.users.models import User, Follow, PlayList
 from apps.artists.models import Artist
 from apps.users.permissions import IsAdmin, IsModerator, IsOwner
 from apps.users.user_serializer import (UserSerializer, UserCreateSerializer,
  UserUpdateSerializer, UserPasswordSerializer)
+from apps.users.playlist_serializer import (PlayListSerializer,
+ PlayListCreateSerializer, PlayListUpdateSerializer)
 
 class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
@@ -20,7 +23,7 @@ class UserCreateAPIView(CreateAPIView):
     serializer_class = UserCreateSerializer
     permission_classes = (AllowAny, )
 
-class UserRetrieveAPIView(RetrieveAPIView):
+class UserDetailAPIView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsOwner | IsModerator, )
@@ -73,3 +76,37 @@ class FollowToggleAPIView(GenericAPIView):
             follow.delete()
             return Response({"status": 'unfollowed'})
         return Response({"status": 'followed'})
+    
+class PlayListDetailAPIView(RetrieveAPIView):
+    queryset = PlayList.objects.all()
+    serializer_class = PlayListSerializer
+    permission_classes = (AllowAny, )
+
+    def get_object(self):
+        obj = super().get_object()
+        if obj.is_public or obj.user == self.request.user:
+            return obj
+        raise PermissionDenied
+
+class PlayListCreateAPIView(CreateAPIView):
+    queryset = PlayList.objects.all()
+    serializer_class = PlayListCreateSerializer
+    permission_classes = (IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        serializer.save(user= self.request.user)
+
+class PlayListsUpdateAPIView(UpdateAPIView):
+    queryset = PlayList.objects.all()
+    serializer_class = PlayListUpdateSerializer
+    permission_classes = (IsOwner, )
+
+    def get_object(self):
+        return PlayList.objects.get(id = self.kwargs['pk'],user=self.request.user)
+    
+class PlayListDeleteAPIView(DestroyAPIView):
+    queryset = PlayList.objects.all()
+    permission_classes = (IsOwner | IsAdmin, )
+
+    def get_object(self):
+        return PlayList.objects.get(id = self.kwargs['pk'], user=self.request.user)

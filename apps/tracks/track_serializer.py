@@ -11,14 +11,16 @@ class TrackSerializer(serializers.ModelSerializer):
 
 
 class TrackCreateSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(required=True)
-    audio_file = serializers.FileField(required=True)
-    album = serializers.PrimaryKeyRelatedField(queryset= Album.objects.all(), required= False, allow_null= True)
-    genre = serializers.PrimaryKeyRelatedField(queryset= Genre.objects.all(), required= False, allow_null= True)
-    cover = serializers.ImageField(required= False)
     class Meta:
         model = Track
         fields = ('title', 'album', 'genre', 'cover', 'audio_file')
+        extra_kwargs = {
+            'title': {'required': True},
+            'album': {"queryset": Album.objects.all(), 'required': True},
+            'genre': {"queryset": Genre.objects.all(), 'required': True},
+            'audio_file': {'required': True},
+            'cover': {'required': False},
+        }
 
     def create(self, validated_data):
         audio = validated_data['audio_file']

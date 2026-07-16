@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from apps.artists.models import Artist
-from apps.users.models import User
 
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:

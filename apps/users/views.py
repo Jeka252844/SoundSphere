@@ -1,5 +1,5 @@
 from rest_framework.generics import (ListAPIView, CreateAPIView, GenericAPIView, 
-                                    UpdateAPIView, DestroyAPIView, RetrieveAPIView)
+    UpdateAPIView, DestroyAPIView, RetrieveAPIView)
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -26,7 +26,7 @@ class UserRetrieveAPIView(RetrieveAPIView):
 class UserUpdateAPIView(UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
-    permission_classes = (IsOwner | IsModerator, )
+    permission_classes = (IsOwner, )
 
     def get_object(self):
         user = self.request.user
@@ -34,7 +34,7 @@ class UserUpdateAPIView(UpdateAPIView):
 
 class UserPasswordUpdateAPIView(GenericAPIView):
     serializer_class = UserPasswordSerializer
-    permission_classes = (IsOwner | IsAdmin, )
+    permission_classes = (IsOwner, )
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)

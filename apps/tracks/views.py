@@ -23,11 +23,11 @@ class TrackCreateAPIView(CreateAPIView):
 class TrackUpdateAPIView(UpdateAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackUpdateSerializer
-    permission_classes = (IsArtist, )
+    permission_classes = (IsOwner, )
 
 class TrackDeleteAPIView(DestroyAPIView):
     queryset = Track.objects.all()
-    permission_classes = (IsArtist | IsModerator, )
+    permission_classes = (IsOwner| IsAdmin, )
 
 class TopGenreTracksViews(ListAPIView):
     serializer_class = TrackSerializer

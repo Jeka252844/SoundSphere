@@ -45,13 +45,14 @@ INSTALLED_APPS = [
     'django_filters',
     # 'corsheaders',
     'drf_yasg',
-    # 'channels',
+    'channels',
+    'daphne',
 
     # apps
     'apps.users',
     'apps.tracks',
     'apps.artists',
-    # 'apps.player',
+    'apps.player',
     # 'apps.social',
     # 'apps.analitics',
 
@@ -86,6 +87,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+ASGI_APPLICATION = 'config.asgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -108,6 +111,12 @@ DATABASES = {
 #     }
 # }
 
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

@@ -29,6 +29,9 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         
     async def stream_track(self, track_id):
         track = await database_sync_to_async(Track.objects.get)(id=track_id)
+        if not track.audio_file:
+            await self.send(text_data=json.dumps({"type": "error", "message": "No audio file"}))
+            return
         with open(track.audio_file.path, 'rb') as f:
             while chunk := f.read(8192):
                 await self.send(bytes_data=chunk)

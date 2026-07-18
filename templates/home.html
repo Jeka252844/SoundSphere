@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="logo-showcase" id="logoShowcase">
+    <div class="logo-glow"></div>
+    <svg class="logo-large" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="43" fill="url(#djangoGrad)" mask="url(#soundwaveMask)" />
+    </svg>
+</div>
+
+<h1 class="hero-title">Sound<span class="highlight">Sphere</span></h1>
+
+<p class="hero-subtitle">
+    Надежный и мощный звук.<br>
+</p>
+
+<div class="cta-group">
+    <a href="{% url 'player' %}" class="btn btn-primary">Слушать сейчас</a>
+    <a href="{% url 'documentation' %}" class="btn btn-secondary">Документация / API</a>
+</div>
+{% endblock content %}

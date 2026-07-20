@@ -9,7 +9,7 @@ app_name = 'artists'
 
 urlpatterns = [
     # artist
-    path('', ArtistListAPIView.as_view(), name='artist_list'),
+    path('list/', ArtistListAPIView.as_view(), name='artist_list'),
     path('<int:pk>/', ArtistDetailAPIView.as_view(), name='artist_detail'),
     path('create/', ArtistCreateAPIView.as_view(), name='artist_create'),
     path('update/', ArtistUpdateAPIView.as_view(), name='artist_update'),
@@ -18,7 +18,7 @@ urlpatterns = [
     path('search/', SearchAristsView.as_view(), name='search_artists'),
 
     # album
-    path('album/', AlbumListAPIView.as_view(), name="album_list"),
+    path('album/list/', AlbumListAPIView.as_view(), name="album_list"),
     path('album/<int:pk>/', AlbumDetailAPIView.as_view(), name="album_detail"),
     path('album/create/', AlbumCreateAPIView.as_view(), name='album_create'),
     path('album/<int:pk>/update/', AlbumUpdateAPIView.as_view(), name='album_update'),

@@ -8,7 +8,7 @@ app_name= 'users'
 
 urlpatterns = [
     # user
-    path('', UserListAPIView.as_view(), name='user_list'),
+    path('list/', UserListAPIView.as_view(), name='user_list'),
     path('create/', UserCreateAPIView.as_view(), name='user_create'),
     path('<int:pk>/', UserDetailAPIView.as_view(), name='user_detail'),
     path('update/', UserUpdateAPIView.as_view(), name='update_user'),
@@ -19,7 +19,7 @@ urlpatterns = [
     path('<int:pk>/follow/', FollowToggleAPIView.as_view(), name='follow'),
 
     # playlist
-    path('playlist/', PlayListListAPIView.as_view(), name='playlist_list'),
+    path('playlist/list/', PlayListListAPIView.as_view(), name='playlist_list'),
     path('playlist/<int:pk>/', PlayListDetailAPIView.as_view(), name='playlist_detail'),
     path('playlist/create/', PlayListCreateAPIView.as_view(), name='playlist_create'),
     path('playlist/<int:pk>/update/', PlayListsUpdateAPIView.as_view(), name='playlist_update'),

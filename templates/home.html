@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <script src="{% static 'js/home.js' %}"></script>
+{% endblock extra_js %}
 
 {% block content %}
 <div class="logo-showcase" id="logoShowcase">

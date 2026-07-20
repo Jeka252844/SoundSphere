@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=16, min_length=8, write_only=True, required = True)
-    email = serializers.EmailField(required = False)
+    email = serializers.EmailField(required = True)
     phone_number = serializers.CharField(required = False)
 
     class Meta:
@@ -31,11 +31,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
         validators = [
             PasswordValidator(field='password')
         ]
-
-    def validate(self, data):
-        if not data.get('email') and not data.get('phone_number'):
-            raise  serializers.ValidationError('Укажите email или номер телефона')
-        return data
+        
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError('Этот email уже используется')
+        return value
 
     def create(self, validated_data):
         user = User.objects.create(**validated_data)

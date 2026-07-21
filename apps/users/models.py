@@ -11,7 +11,7 @@ class User(AbstractUser):
         ('moderator', 'Модератор'),
         ('user', 'Пользователь'),
     ]
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name=_("Аватар"))
+    avatar = models.ImageField(upload_to='avatars/', default=None, null=True, blank=True, verbose_name=_("Аватар"))
     email = models.EmailField(unique=True, null=True, blank=True)
     phone_number = models.CharField(max_length=12, unique=True, null=True,blank=True, verbose_name=_('номер телефона'))
     bio = models.TextField(max_length=300, blank=True, verbose_name=_('Биография'))

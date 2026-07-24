@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from apps.tracks.models import Track
 
 def home(request):
     return render(request, 'home.html')
@@ -10,7 +11,9 @@ def docs(request):
     return render(request, 'document.html')
 
 def tracks(request):
-    return render(request, 'tracks.html')
+    track_id = request.GET.get('track_id', 1)
+    track = Track.objects.first()
+    return render(request, 'player.html', {'track': track})
 
 def profile(request):
     return render(request, 'profile.html')

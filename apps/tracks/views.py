@@ -7,6 +7,11 @@ from apps.tracks.services import TrackService
 from apps.users.permissions import IsArtist, IsModerator, IsAdmin, IsOwner
 from apps.tracks.track_serializer import TrackSerializer, TrackCreateSerializer, TrackUpdateSerializer
 
+class TracksListAPIView(ListAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    permission_classes = (IsModerator, )
+
 class TrackDetailAPIView(RetrieveAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer

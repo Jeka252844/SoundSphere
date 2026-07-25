@@ -2,6 +2,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 import json
 import asyncio
+import os
 
 from apps.tracks.models import Track
 
@@ -49,15 +50,24 @@ class PlayerConsumer(AsyncWebsocketConsumer):
                 "duration": track.duration,
                 "mime_type": mime_type
             }))
+
+            file_path = track.audio_file.path
+            file_size = os.path.getsize(file_path)
             
-            with open(track.audio_file.path, 'rb') as f:
-                while chunk := f.read(8192):
-                    await self.send(bytes_data=chunk)
+            with open(file_path, 'rb') as f:
+                file_data = f.read()
 
-                    await asyncio.sleep(0.01)
-                await asyncio.sleep(0.5)
-
-                await self.send(text_data=json.dumps({'type': 'end_of_stream'}))
+            chunk_size = 16384
+            offset = 0
+            
+            while offset < file_size:
+                chunk = file_data[offset:offset + chunk_size]
+                await self.send(bytes_data=chunk)
+                offset += chunk_size
+                await asyncio.sleep(0.05)
+            
+            await asyncio.sleep(1.0)
+            await self.send(text_data=json.dumps({'type': 'end_of_stream'}))
 
         except Exception as e:
             await self.send(text_data=json.dumps({"type": "error", "message": str(e)}))

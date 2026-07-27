@@ -34,16 +34,12 @@ class TrackDeleteAPIView(DestroyAPIView):
     queryset = Track.objects.all()
     permission_classes = (IsOwner| IsAdmin, )
 
-class TopGenreTracksViews(ListAPIView):
+class TopTracksWeeklyView(ListAPIView):
     serializer_class = TrackSerializer
     permission_classes = (AllowAny, )
 
     def get_queryset(self):
-        genre_name = self.request.GET.get('genre_name')
-        page = self.request.GET.get('page', 1)
-        if genre_name:
-            return TrackService.get_top_by_genre(genre_name, int(page))
-        return TrackService.get_top_tracks(int(page))
+        return TrackService.get_top_tracks_weekly()
     
 class SearchTracksView(ListAPIView):
     serializer_class = TrackSerializer

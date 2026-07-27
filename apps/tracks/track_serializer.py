@@ -5,9 +5,22 @@ from apps.tracks.models import Track, Genre
 from apps.artists.models import Album, Artist
 
 class TrackSerializer(serializers.ModelSerializer):
+    artist_name = serializers.CharField(source='artist.name', read_only=True)
+    artist_id = serializers.IntegerField(source='artist.id', read_only=True)
+    genre_name = serializers.CharField(source='genre.name', read_only=True)
+    weekly_plays = serializers.IntegerField(read_only=True, default=0)
+
     class Meta:
         model = Track
-        fields = ('id', 'title', 'artist', 'album', 'cover', 'audio_file', 'genre', 'duration', 'plays_count', 'created_at')
+        fields = (
+            'id', 'title', 'duration', 'plays_count', 'cover', 
+            'audio_file', 'created_at',
+            # Вложенные
+            'artist_id', 'artist_name',
+            'album', 'genre_name',
+            # Статистика
+            'weekly_plays',
+        )
 
 
 class TrackCreateSerializer(serializers.ModelSerializer):

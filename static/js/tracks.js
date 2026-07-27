@@ -61,10 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('click', (e) => {
         const artist = e.target.closest('.track-row-artist');
-        if (artist?.dataset.artistId) {
-            window.location.href = `/artists/?artist_id=${artist.dataset.artistId}`;
+        if (artist) {
+            e.stopPropagation();
+            const artistId = artist.getAttribute('data-artist-id');
+            window.location.href = `/artists/?artist_id=${artistId}`;
             return;
         }
+    
         const row = e.target.closest('.track-row');
         if (row?.dataset.trackId) {
             window.location.href = `/player/?track_id=${row.dataset.trackId}`;
@@ -99,45 +102,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderTracks(tracks) {
-        return tracks.map(track => `
-            <div class="track-row" data-track-id="${track.id}">
-                <img src="${track.cover || '/static/img/default-cover.png'}" 
-                     class="track-row-cover" alt=""
-                     onerror="this.style.display='none'">
-                <div class="track-row-info">
-                    <div class="track-row-title">${escapeHtml(track.title)}</div>
-                    <div class="track-row-artist" data-artist-id="${track.artist?.id || ''}">
-                        ${escapeHtml(track.artist?.name || 'Неизвестен')}
+        if (!tracks || tracks.length === 0) {
+            return '<p class="text-muted p-3">Треки не найдены</p>';
+        }
+        
+        return tracks.map(track => {
+            const artistId = track.artist_id || track.artist?.id || '';
+            const coverUrl = track.cover || null;
+            
+            console.log('Рисую трек:', track.title, 'cover:', coverUrl);
+            
+            return `
+                <div class="track-row" data-track-id="${track.id}">
+                    ${coverUrl 
+                        ? `<img src="${coverUrl}" class="track-row-cover" alt="">`
+                        : getDefaultCoverSVG('80', '80', '100')}
+                    <div class="track-row-info">
+                        <div class="track-row-title">${escapeHtml(track.title)}</div>
+                        <div class="track-row-artist" data-artist-id="${artistId}">
+                            ${escapeHtml(track.artist_name || track.artist?.name || 'Неизвестен')}
+                        </div>
+                    </div>
+                    <div class="track-row-meta">
+                        <span class="track-badge">${escapeHtml(track.genre_name || track.genre?.name || '—')}</span>
+                        <span class="track-stat">${formatPlays(track.plays_count || 0)}</span>
+                        <span class="track-time">${formatDuration(track.duration || 0)}</span>
                     </div>
                 </div>
-                <div class="track-row-meta">
-                    <span class="track-badge">${escapeHtml(track.genre?.name || '—')}</span>
-                    <span class="track-stat">${formatPlays(track.plays_count || 0)}</span>
-                    <span class="track-time">${formatDuration(track.duration || 0)}</span>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // =================================
-    //  УТИЛИТЫ
-
-    function formatDuration(seconds) {
-        if (!seconds || isNaN(seconds)) return '0:00';
-        const m = Math.floor(seconds / 60);
-        const s = Math.floor(seconds % 60);
-        return `${m}:${s.toString().padStart(2, '0')}`;
-    }
-
-    function formatPlays(count) {
-        if (count >= 1000000) return (count / 1000000).toFixed(1) + 'M';
-        if (count >= 1000) return (count / 1000).toFixed(1) + 'K';
-        return String(count);
-    }
-
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+            `;
+        }).join('');
     }
 });

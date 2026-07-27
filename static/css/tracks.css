@@ -262,6 +262,11 @@
     white-space: nowrap;
 }
 
+.default-cover-svg {
+    display: block;
+    background: #0A1C14;
+}
+
 .track-time {
     font-size: 0.85rem;
     color: #9ca3af;

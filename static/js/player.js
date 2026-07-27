@@ -23,6 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let isReconnecting = false;
     let reconnectTimeout = null;
 
+    loadTrackCover(trackId);
+
+    async function loadTrackCover(trackId){
+        const coverContainer = document.querySelector('.track-image');
+        if (!coverContainer) return;
+
+        try {
+            const res = await fetch(`/api/tracks/${trackId}/`);
+            const data = await res.json();
+
+            if (data.cover) {
+                coverContainer.innerHTML = `<img src="${data.cover}" class="track-row-cover" alt="">`;
+            } else {
+                coverContainer.innerHTML = getDefaultCoverSVG('80', '80', '100');
+            }
+        } catch (err) {
+            coverContainer.innerHTML = getDefaultCoverSVG('90', '90', '100');
+        }
+    }
+
     function initMediaSource() {
         if (mediaSource && mediaSource.readyState === 'open') {
             try {
@@ -144,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function attemptReconnect() {
         if (reconnectAttempts >= maxReconnectAttempts) {
-            console.log('❌ Max reconnect attempts reached');
+            console.log('Max reconnect attempts reached');
             isReconnecting = false;
             playBtn.innerHTML = '<i class="fas fa-exclamation-triangle fa-lg"></i>';
             setTimeout(() => {
@@ -157,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isReconnecting = true;
         
         const delay = Math.pow(2, reconnectAttempts) * 1000;
-        console.log(`🔄 Reconnect ${reconnectAttempts}/${maxReconnectAttempts} in ${delay/1000}s`);
+        console.log(`Reconnect ${reconnectAttempts}/${maxReconnectAttempts} in ${delay/1000}s`);
         
         playBtn.innerHTML = '<i class="fas fa-spinner fa-spin fa-lg"></i>';
         
@@ -282,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             setTimeout(() => clearInterval(wait), 15000);
         } else {
-            // Просто продолжаем
             audio.play();
             progressInterval = setInterval(updateProgress, 200);
             isPlaying = true;

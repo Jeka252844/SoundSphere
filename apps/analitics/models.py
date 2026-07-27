@@ -1,8 +1,13 @@
 from django.db import models
 
 class ListeningHistory(models.Model):
-    user = models.ForeignKey('apps.users.User', on_delete=models.CASCADE, related_name='listening_history', verbose_name='пользователь')
-    track = models.ForeignKey('apps.tracks.Track', on_delete=models.CASCADE, related_name='listening_history',verbose_name='трек')
+    user = models.ForeignKey(
+        'users.User', 
+        on_delete=models.CASCADE, 
+        related_name='listening_history', 
+        null=True, blank=True,
+        verbose_name='пользователь')
+    track = models.ForeignKey('tracks.Track', on_delete=models.CASCADE, related_name='listening_history',verbose_name='трек')
     listened_at = models.DateTimeField(auto_now_add=True, verbose_name='дата прослушивания')
 
     class Meta:

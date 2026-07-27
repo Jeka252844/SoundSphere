@@ -1,10 +1,13 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
+
+from datetime import timezone
 import json
 import asyncio
 import os
 
 from apps.tracks.models import Track
+from apps.analitics.models import ListeningHistory
 
 class PlayerConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -44,6 +47,8 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         }
         mime_type = mime_map.get(ext, 'audio/mpeg')
 
+        asyncio.create_task(self.record_listening(track=track))
+
         try:
             await self.send(text_data=json.dumps({
                 "type": "metadata",
@@ -71,3 +76,25 @@ class PlayerConsumer(AsyncWebsocketConsumer):
 
         except Exception as e:
             await self.send(text_data=json.dumps({"type": "error", "message": str(e)}))
+
+    async def record_listening(self, track):
+        try:
+            await asyncio.sleep(5)
+
+            if self.scope.get('user') and self.scope['user'].is_authenticated:
+                user = self.scope['user']
+            else:
+                user = None
+
+            await  database_sync_to_async(ListeningHistory.objects.create)(
+                track=track,
+                user=user
+            )
+
+            track.plays_count += 1
+            await database_sync_to_async(track.save)()
+
+            print(f'Записано прослушивание: {track.title}')
+        
+        except Exception as e:
+            print(f'Ошибка записи прослушивания: {e}')

@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 
-from apps.users.models import User, Follow, PlayList, PlayListTrack
+from apps.users.models import User, Follow, PlayList, PlayListTrack, PlayListLike
 from apps.artists.models import Artist
 from apps.tracks.models import Track
 from apps.users.permissions import IsAdmin, IsModerator, IsOwner
@@ -141,3 +141,18 @@ class PlayListRemoveTrackAPIView(GenericAPIView):
             track_id=request.data.get('track_id')
         ).delete()
         return Response({'status': 'removed'})
+
+class PlayListLikeAPIView(GenericAPIView):
+    queryset = PlayList.objects.all()
+    permission_classes = (IsAuthenticated, )
+    def post(self, request, pk):
+        playlist = get_object_or_404(PlayList, pk=pk)
+        like, created = PlayListLike.objects.get_or_create(
+            playlist=playlist, user=request.user
+        )
+
+        if not created:
+            like.delete()
+            return Response({'status': 'unliked', 'likes': playlist.playlist_like.count()})
+
+        return Response({'status': 'liked', 'likes': playlist.playlist_like.count()})

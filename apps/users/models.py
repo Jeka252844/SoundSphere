@@ -57,6 +57,19 @@ class PlayListTrack(models.Model):
         verbose_name_plural = 'Треки в плейлисте'
         unique_together = ['track', 'playlist']
 
+class PlayListLike(models.Model):
+    playlist = models.ForeignKey(PlayList, on_delete=models.CASCADE, related_name='playlist_like', verbose_name='плейлист')
+    user = models.ForeignKey(User, related_name='playlist_like', on_delete=models.CASCADE, verbose_name=_("Пользователь"))
+    liked_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name= 'Лайк в плейлиста'
+        verbose_name_plural = 'Лайк в плейлистов'
+        unique_together = ['playlist', 'user']
+
+    def __str__(self):
+        return f'{self.user.username} liked {self.playlist.title}'
+
 class Follow(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', verbose_name=_('Подписчик'))
     following = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='followers', verbose_name=_("Подписан на"))

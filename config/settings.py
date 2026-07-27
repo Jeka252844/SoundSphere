@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'apps.artists',
     'apps.player',
     # 'apps.social',
-    # 'apps.analitics',
+    'apps.analitics',
 
 ]
 

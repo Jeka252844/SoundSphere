@@ -1,12 +1,14 @@
 :root {
   --bg-dark: #040D09;
   --bg-nav: rgba(6, 26, 18, 0.8);
+  --bg-card: #0A1C14;
   --django-green: #44B78B;
   --django-green-bright: #55cda0;
   --django-dark-green: #092E20;
   --django-mid-green: #25865C;
   --text-main: #ffffff;
   --text-muted: #9ca3af;
+  --border-color: rgba(68, 183, 139, 0.2);
   --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -27,7 +29,7 @@ body {
   position: relative;
 }
 
-/* Ambient Glows */
+/* --- Фоновые свечения --- */
 .ambient-glow {
   position: absolute;
   border-radius: 50%;
@@ -52,7 +54,7 @@ body {
   filter: blur(100px);
 }
 
-/* Navbar */
+/* --- Навбар --- */
 .navbar {
   width: 100%;
   padding: 1.5rem 2rem;
@@ -61,28 +63,23 @@ body {
   justify-content: space-between;
   background-color: var(--bg-nav);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(68, 183, 139, 0.2);
-  position: relative;
-  z-index: 10;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
-
 .nav-brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
-.logo {
-  width: 40px;
-  height: 40px;
-}
+.logo { width: 40px; height: 40px; }
 .brand-text {
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.025em;
 }
-.highlight {
-  color: var(--django-green);
-}
+.highlight { color: var(--django-green); }
 
 .nav-links {
   display: none;
@@ -90,25 +87,16 @@ body {
   font-size: 0.875rem;
   font-weight: 500;
 }
-@media (min-width: 768px) {
-  .nav-links { display: flex; }
-}
+@media (min-width: 768px) { .nav-links { display: flex; } }
 .nav-links a {
   color: var(--text-muted);
   text-decoration: none;
   transition: color 0.2s ease;
 }
-.nav-links a:hover {
-  color: var(--text-main);
-}
-.nav-links a.highlight {
-  color: var(--django-green);
-}
-.nav-links a.hover-bright:hover {
-  color: var(--django-green-bright);
-}
+.nav-links a:hover { color: var(--text-main); }
+.nav-links a.active-link { color: var(--django-green); }
 
-/* Buttons */
+/* --- Кнопки --- */
 .btn {
   padding: 0.625rem 1.5rem;
   border-radius: 4px;
@@ -124,23 +112,25 @@ body {
   color: var(--text-main);
   border: 1px solid rgba(68, 183, 139, 0.3);
 }
-.btn-login:hover {
-  background-color: var(--django-mid-green);
-}
+.btn-login:hover { background-color: var(--django-mid-green); }
 
-/* Main Content */
+/* --- Главная страница --- */
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   padding: 2rem 1.5rem 5rem;
-  text-align: center;
   position: relative;
   z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
-
+#viewHome {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 .logo-showcase {
   position: relative;
   cursor: pointer;
@@ -155,96 +145,271 @@ body {
   opacity: 0.3;
   transition: opacity 0.7s ease;
 }
-.logo-showcase:hover .logo-glow {
-  opacity: 0.5;
-}
+.logo-showcase:hover .logo-glow { opacity: 0.5; }
 .logo-large {
-  width: 224px;
-  height: 224px;
-  position: relative;
-  z-index: 10;
+  width: 224px; height: 224px;
+  position: relative; z-index: 10;
   filter: drop-shadow(0 25px 25px rgba(0,0,0,0.5));
   transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-@media (min-width: 768px) {
-  .logo-large { width: 288px; height: 288px; }
-}
-.logo-showcase:hover .logo-large {
-  transform: scale(1.05);
-}
-
+.logo-showcase:hover .logo-large { transform: scale(1.05); }
 .hero-title {
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  margin-bottom: 1.5rem;
+  font-size: 4rem; font-weight: 800;
+  letter-spacing: -0.025em; margin-bottom: 1.5rem;
 }
-@media (min-width: 768px) {
-  .hero-title { font-size: 5rem; }
-}
-
 .hero-subtitle {
-  font-size: 1.125rem;
-  color: var(--text-muted);
-  max-width: 42rem;
-  margin: 0 auto 3rem;
-  line-height: 1.5;
+  font-size: 1.25rem; color: var(--text-muted);
+  max-width: 42rem; margin: 0 auto 3rem; line-height: 1.5;
 }
-@media (min-width: 768px) {
-  .hero-subtitle { font-size: 1.5rem; }
-}
-
-.cta-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-@media (min-width: 640px) {
-  .cta-group { flex-direction: row; }
-}
-
+.cta-group { display: flex; gap: 1rem; }
 .btn-primary {
-  background-color: var(--django-green);
-  color: var(--bg-dark);
-  font-size: 1.125rem;
-  font-weight: 700;
-  padding: 1rem 2rem;
+  background-color: var(--django-green); color: var(--bg-dark);
+  font-size: 1rem; font-weight: 700; padding: 1rem 2rem;
   box-shadow: 0 0 30px rgba(68, 183, 139, 0.3);
 }
-.btn-primary:hover {
-  background-color: var(--django-green-bright);
-  transform: scale(1.05);
-}
-
+.btn-primary:hover { background-color: var(--django-green-bright); transform: scale(1.05); }
 .btn-secondary {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--text-main);
-  font-size: 1.125rem;
-  font-weight: 700;
-  padding: 1rem 2rem;
-  border: 1px solid rgba(68, 183, 139, 0.2);
+  background-color: rgba(255, 255, 255, 0.05); color: var(--text-main);
+  font-size: 1rem; font-weight: 700; padding: 1rem 2rem;
+  border: 1px solid var(--border-color);
 }
-.btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.btn-secondary:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+/* --- Футер --- */
+.footer {
+  padding: 2rem; text-align: center; color: var(--text-muted);
+  font-size: 0.875rem; border-top: 1px solid var(--border-color);
+  background-color: rgba(6, 26, 18, 1);
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.logo-small { width: 20px; height: 20px; opacity: 0.5; }
+
+/* ============================================ */
+/*           СТРАНИЦА ТРЕКОВ / АРТИСТОВ         */
+/* ============================================ */
+
+/* --- Поисковая секция (единая ширина с контентом) --- */
+.search-section {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 30px;
+  padding: 0 20px;
+}
+.search-bar {
+  display: flex; align-items: center;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  transition: border-color 0.2s;
+  position: relative;
+  width: 100%;
+}
+.search-bar:focus-within {
+  border-color: var(--django-green);
+  box-shadow: 0 0 10px rgba(68, 183, 139, 0.1);
+}
+.search-icon {
+  width: 24px; height: 24px;
+  color: var(--text-muted); margin-right: 1rem;
+}
+.search-bar input {
+  flex: 1; background: transparent; border: none;
+  color: var(--text-main); font-size: 1.125rem;
+  padding: 0.75rem 0; outline: none;
+}
+.btn-clear {
+  background: none; border: none; color: var(--text-muted);
+  cursor: pointer; width: 24px; height: 24px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.2s;
+}
+.btn-clear:hover { color: var(--django-green-bright); }
+
+/* --- Выпадающий список поиска --- */
+.search-wrapper { position: relative; width: 100%; }
+.search-dropdown {
+  position: absolute; top: 100%; left: 0; right: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--django-green); border-radius: 8px;
+  margin-top: 8px; z-index: 100;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  display: none; overflow: hidden;
+}
+.search-dropdown.active { display: block; }
+.dropdown-header {
+  padding: 0.75rem 1rem; font-size: 0.8rem;
+  color: var(--text-muted); border-bottom: 1px solid var(--border-color);
+  background: rgba(9, 46, 32, 0.2);
+}
+.dropdown-list { list-style: none; margin: 0; padding: 0; }
+.dropdown-item {
+  padding: 0.75rem 1rem; font-size: 0.95rem;
+  color: var(--text-main); cursor: pointer;
+  transition: background-color 0.2s;
+}
+.dropdown-item:hover {
+  background-color: rgba(68, 183, 139, 0.15);
+  color: var(--django-green-bright);
 }
 
-/* Footer */
-.footer {
-  padding: 2rem;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  border-top: 1px solid rgba(68, 183, 139, 0.1);
-  background-color: rgba(6, 26, 18, 1);
-  position: relative;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+/* --- Топ запросы (чипсы) --- */
+.top-searches {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 8px; margin-top: 12px; padding: 0 4px;
 }
-.logo-small {
-  width: 20px;
-  height: 20px;
-  opacity: 0.5;
+.top-searches-label { color: #6b7280; font-size: 0.8rem; margin-right: 4px; }
+.top-search-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #b3b3b3; padding: 5px 14px;
+  border-radius: 50px; font-size: 0.8rem;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.top-search-chip:hover {
+  background: rgba(29, 185, 84, 0.15);
+  border-color: #1db954; color: #1db954;
+}
+
+/* --- Фильтры жанров --- */
+.search-filters {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-top: 14px; padding: 0 4px;
+}
+.filter-tag {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #b3b3b3; padding: 6px 16px;
+  border-radius: 50px; font-size: 0.85rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.filter-tag:hover { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
+.filter-tag.active { background: #1db954; border-color: #1db954; color: #ffffff; }
+
+/* --- Фильтр по жанрам (селект) --- */
+.filter-wrapper { margin-top: 1.5rem; }
+.genre-select {
+  background-color: var(--bg-card); color: var(--text-main);
+  border: 1px solid var(--border-color); padding: 0.6rem 1.25rem;
+  border-radius: 8px; font-size: 0.95rem; outline: none;
+  cursor: pointer; min-width: 200px; font-family: inherit;
+  transition: border-color 0.2s;
+}
+.genre-select:focus, .genre-select:hover { border-color: var(--django-green); }
+.genre-select option { background-color: var(--bg-dark); color: var(--text-main); }
+
+/* --- Секции (единая ширина с поиском) --- */
+.section-container {
+  width: 100%; max-width: 900px;
+  margin: 0 auto 30px; padding: 0 20px;
+}
+.section-title {
+  font-size: 1.3rem; font-weight: 700;
+  color: #ffffff; margin-bottom: 16px;
+}
+
+/* --- Список треков (с фоном) --- */
+.track-list {
+  display: flex; flex-direction: column; gap: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px; overflow: hidden;
+}
+.track-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px; cursor: pointer;
+  transition: background 0.2s;
+  background: rgba(255, 255, 255, 0.02);
+}
+.track-item:not(:last-child) { border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+.track-item:hover { background: rgba(29, 185, 84, 0.08); }
+.track-cover {
+  width: 50px; height: 50px; border-radius: 8px;
+  overflow: hidden; flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+}
+.track-cover img { width: 100%; height: 100%; object-fit: cover; }
+.track-info { flex: 1; min-width: 0; }
+.track-title {
+  font-size: 0.95rem; font-weight: 600; color: #ffffff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.track-artist {
+  font-size: 0.8rem; color: #9ca3af; margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.track-artist:hover { color: #1db954; }
+.track-meta { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.track-genre {
+  font-size: 0.75rem; color: #1db954;
+  background: rgba(29, 185, 84, 0.1);
+  padding: 3px 10px; border-radius: 50px; white-space: nowrap;
+}
+.track-plays { font-size: 0.78rem; color: #6b7280; white-space: nowrap; }
+.track-duration {
+  font-size: 0.85rem; color: #9ca3af;
+  font-variant-numeric: tabular-nums; min-width: 36px; text-align: right;
+}
+
+/* --- Результаты поиска (с фоном) --- */
+.results-list {
+  display: flex; flex-direction: column; gap: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px; overflow: hidden;
+}
+.result-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px; cursor: pointer;
+  transition: background 0.2s;
+  background: rgba(255, 255, 255, 0.02);
+}
+.result-card:not(:last-child) { border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+.result-card:hover { background: rgba(29, 185, 84, 0.08); }
+.result-cover { width: 44px; height: 44px; border-radius: 6px; overflow: hidden; flex-shrink: 0; }
+.result-cover img { width: 100%; height: 100%; object-fit: cover; }
+.result-title { font-size: 0.9rem; font-weight: 600; color: #ffffff; }
+.result-artist { font-size: 0.78rem; color: #9ca3af; margin-top: 2px; }
+
+/* --- Карточка студии (артист) --- */
+.artist-card {
+  display: flex; align-items: center; gap: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px; padding: 24px;
+  transition: border-color 0.3s;
+}
+.artist-card:hover { border-color: rgba(29, 185, 84, 0.3); }
+.personal-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  overflow: hidden; border: 2px solid rgba(29, 185, 84, 0.3);
+  flex-shrink: 0;
+}
+.personal-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.artist-info h3 { font-size: 1.1rem; font-weight: 600; color: #ffffff; margin: 0 0 4px; }
+.artist-stats { font-size: 0.85rem; color: #9ca3af; margin: 0 0 12px; }
+.personal-actions { display: flex; gap: 10px; }
+.btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; }
+
+/* --- Адаптивность --- */
+@media (max-width: 768px) {
+  .track-meta { gap: 8px; }
+  .track-plays { display: none; }
+  .track-item { padding: 10px 12px; gap: 10px; }
+  .track-cover { width: 42px; height: 42px; }
+  .artist-card { flex-direction: column; text-align: center; }
+  .personal-actions { justify-content: center; }
+  .search-bar input { padding: 10px 12px; font-size: 0.9rem; }
+  .top-searches { gap: 6px; }
+  .top-search-chip { padding: 4px 10px; font-size: 0.75rem; }
+}
+
+@media (max-width: 480px) {
+  .track-genre { display: none; }
+  .track-cover { width: 38px; height: 38px; }
+  .track-item { padding: 8px 10px; gap: 8px; }
+  .section-title { font-size: 1.1rem; }
+  .filter-tag { padding: 5px 12px; font-size: 0.78rem; }
+  .search-bar input { padding: 8px 10px; font-size: 0.85rem; }
 }

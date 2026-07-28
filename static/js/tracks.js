@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         const row = e.target.closest('.track-row');
         if (row?.dataset.trackId) {
-            window.location.href = `/player/?track_id=${row.dataset.trackId}`;
+            window.location.href = `/track/card/${row.dataset.trackId}/`;
         }
     });
 

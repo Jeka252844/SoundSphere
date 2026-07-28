@@ -13,6 +13,9 @@ def docs(request):
 def tracks(request):
     return render(request, 'tracks.html')
 
+def track_card(request, track_id):
+    return render(request, 'track_card.html', {'track_id': track_id})
+
 def profile(request):
     return render(request, 'profile.html')
 
@@ -27,7 +30,7 @@ def register(request):
 
 def player(request):
     track_id = request.GET.get('track_id', 1)
-    track = Track.objects.first()
+    track = Track.objects.filter(track_id=track_id).first()
     return render(request, 'player.html', {'track': track})
 
 def artists(request):

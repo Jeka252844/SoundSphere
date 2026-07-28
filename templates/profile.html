@@ -23,71 +23,115 @@
 				
 				<div class="col-lg-8">
 					<div class="card mb-4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(68,183,139,0.2);">
-						<div class="card-body text-white" >
-							<div class="row">
+						<div class="card-body text-white">
+							
+							<div class="row align-items-center mb-2">
 								<div class="col-sm-3"><p class="mb-0">Имя</p></div>
-								<div class="col-sm-9"><p class="text-white-50 mb-0" id="profileUsername"></p></div>
+								<div class="col-sm-7"><p class="text-white-50 mb-0" id="profileUsername"></p></div>
+								<div class="col-sm-2 text-end">
+									<button class="btn-edit-inline" onclick="editField('username')">
+										<i class="fas fa-pen"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row mb-2" id="editRow-username" style="display:none;">
+								<div class="col-sm-9 offset-sm-3">
+									<div class="input-group input-group-sm">
+										<input type="text" id="editUsername" class="form-control">
+										<button class="btn btn-sm btn-success" onclick="saveField('username')">✓</button>
+										<button class="btn btn-sm btn-outline-secondary" onclick="cancelField('username')">✕</button>
+									</div>
+								</div>
 							</div>
 							<hr>
-							<div class="row">
+
+							<div class="row align-items-center mb-2">
 								<div class="col-sm-3"><p class="mb-0">Email</p></div>
-								<div class="col-sm-9"><p class="text-white-50 mb-0" id="profileEmail"></p></div>
+								<div class="col-sm-7"><p class="text-white-50 mb-0" id="profileEmail"></p></div>
+								<div class="col-sm-2 text-end">
+									<span title="Для смены email обратитесь в поддержку">🔒</span>
+								</div>
 							</div>
 							<hr>
-							<div class="row">
+
+							<div class="row align-items-center mb-2">
 								<div class="col-sm-3"><p class="mb-0">Телефон</p></div>
-								<div class="col-sm-9"><p class="text-white-50 mb-0" id="profilePhone"></p></div>
+								<div class="col-sm-7"><p class="text-white-50 mb-0" id="profilePhone"></p></div>
+								<div class="col-sm-2 text-end">
+									<button class="btn-edit-inline" onclick="editField('phone')">
+										<i class="fas fa-pen"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row mb-2" id="editRow-phone" style="display:none;">
+								<div class="col-sm-9 offset-sm-3">
+									<div class="input-group input-group-sm">
+										<input type="text" id="editPhone" class="form-control">
+										<button class="btn btn-sm btn-success" onclick="saveField('phone')">✓</button>
+										<button class="btn btn-sm btn-outline-secondary" onclick="cancelField('phone')">✕</button>
+									</div>
+								</div>
 							</div>
 							<hr>
-							<div class="row">
+							<div class="row align-items-center mb-2">
 								<div class="col-sm-3"><p class="mb-0">О себе</p></div>
-								<div class="col-sm-9"><p class="text-white-50 mb-0" id="profileBioText"></p></div>
+								<div class="col-sm-7"><p class="text-white-50 mb-0" id="profileBioText"></p></div>
+								<div class="col-sm-2 text-end">
+									<button class="btn-edit-inline" onclick="editField('bio')">
+										<i class="fas fa-pen"></i>
+									</button>
+								</div>
+							</div>
+							<div class="row mb-2" id="editRow-bio" style="display:none;">
+								<div class="col-sm-9 offset-sm-3">
+									<div class="input-group input-group-sm">
+										<textarea id="editBio" class="form-control" rows="2"></textarea>
+										<button class="btn btn-sm btn-success" onclick="saveField('bio')">✓</button>
+										<button class="btn btn-sm btn-outline-secondary" onclick="cancelField('bio')">✕</button>
+									</div>
+								</div>
 							</div>
 							<hr>
+
 							<div class="d-flex justify-content-between">
-								<button class="btn btn-outline-primary" id="editProfileBtn">Редактировать</button>
-								<button class="btn btn-outline-danger" id="deleteProfileBtn">Удалить</button>
-							</div>
+								<button class="btn btn-outline-warning btn-sm" id="changePasswordBtn">
+									<i class="fas fa-key"></i> Сменить пароль
+								</button>
+								<button class="btn btn-outline-danger btn-sm" id="deleteProfileBtn">
+									<i class="fas fa-trash"></i> Удалить
+								</button>
+            				</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<div id="profileEdit" style="display: none;">
-			<div class="col-lg-8 mx-auto">
-				<div class="card mb-4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(68,183,139,0.2);">
-					<div class="card-body text-white">
-						<form id="profileEditForm">
-							<div class="mb-3">
-								<label>Аватар</label>
-								<input type="file" id="avatarInput" class="form-control" accept="image/*">
-							</div>
-							<div class="mb-3">
-								<label>Имя пользователя</label>
-								<input type="text" id="editUsername" class="form-control">
-							</div>
-							<div class="mb-3">
-								<label>Email</label>
-								<input type="email" id="editEmail" class="form-control">
-							</div>
-							<div class="mb-3">
-								<label>Телефон</label>
-								<input type="text" id="editPhone" class="form-control">
-							</div>
-							<div class="mb-3">
-								<label>О себе</label>
-								<textarea id="editBio" class="form-control" rows="3"></textarea>
-							</div>
-							<div class="d-flex justify-content-between">
-								<button type="submit" class="btn btn-primary">Сохранить</button>
-								<button type="button" class="btn btn-outline-secondary" id="cancelEditBtn">Отмена</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-  </div>
 </section>
+<div class="modal-overlay" id="passwordModal" style="display:none;">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h3>🔑 Смена пароля</h3>
+            <button class="modal-close" onclick="closePasswordModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <label class="text-muted small">Старый пароль</label>
+                <input type="password" id="oldPassword" class="form-control" placeholder="Введите старый пароль">
+            </div>
+            <div class="mb-3">
+                <label class="text-muted small">Новый пароль</label>
+                <input type="password" id="newPassword1" class="form-control" placeholder="От 8 до 16 символов">
+            </div>
+            <div class="mb-3">
+                <label class="text-muted small">Повторите пароль</label>
+                <input type="password" id="newPassword2" class="form-control" placeholder="Повторите новый пароль">
+            </div>
+            <div id="passwordError" class="text-danger small" style="display:none;"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-outline-secondary" onclick="closePasswordModal()">Отмена</button>
+            <button class="btn btn-sm btn-success" id="submitPassword">Сохранить</button>
+        </div>
+    </div>
+</div>
 {% endblock content %}

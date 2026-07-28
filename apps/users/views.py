@@ -15,6 +15,7 @@ from apps.users.user_serializer import (UserSerializer, UserCreateSerializer,
  UserUpdateSerializer, UserPasswordSerializer)
 from apps.users.playlist_serializer import (PlayListSerializer,
  PlayListCreateSerializer, PlayListUpdateSerializer)
+from apps.users.services import PlaylistService
 
 class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
@@ -156,3 +157,10 @@ class PlayListLikeAPIView(GenericAPIView):
             return Response({'status': 'unliked', 'likes': playlist.playlist_like.count()})
 
         return Response({'status': 'liked', 'likes': playlist.playlist_like.count()})
+
+class TopPlaylistsWeeklyView(ListAPIView):
+    serializer_class = PlayListSerializer
+    permission_classes = (AllowAny, )
+
+    def get_queryset(self):
+        return PlaylistService.top_weekly_playlists()

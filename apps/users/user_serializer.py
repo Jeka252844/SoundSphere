@@ -4,11 +4,18 @@ from rest_framework_simplejwt.tokens import Token
 
 from apps.users.models import User
 from apps.users.validators import PasswordValidator
+from apps.users.playlist_serializer import PlayListSerializer
 
 class UserSerializer(serializers.ModelSerializer):
+    playlists = PlayListSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ('id', 'email', 'phone_number', 'username', 'user_role', 'is_artist', 'avatar', 'bio')
+        fields = (
+            'id', 'email', 'phone_number', 'username', 
+            'user_role', 'is_artist', 'avatar', 'bio',
+            'playlists' 
+        )
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=16, min_length=8, write_only=True, required = True)

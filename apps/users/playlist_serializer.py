@@ -3,11 +3,10 @@ from rest_framework import serializers
 from apps.users.models import PlayList
 
 class PlayListSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    likes = serializers.SerializerMethodField()
+    tracks_count =serializers.SerializerMethodField()
     class Meta:
-        user = serializers.StringRelatedField()
-        likes = serializers.SerializerMethodField()
-        tracks_count =serializers.SerializerMethodField()
-
         model = PlayList
         fields = ('id', 'title', 'user', 'is_public', 'created_at', 'likes', 'tracks_count')
 
@@ -20,10 +19,11 @@ class PlayListSerializer(serializers.ModelSerializer):
 class PlayListCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayList
-        fields = ('title','is_public')
+        fields = ('id', 'title', 'is_public', 'user') 
         extra_kwargs = {
             'title': {'required': True},
-            'is_public': {"required": False}
+            'is_public': {'required': False},
+            'user': {'read_only': True}, 
         }
 
     

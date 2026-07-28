@@ -113,6 +113,22 @@ body {
   border: 1px solid rgba(68, 183, 139, 0.3);
 }
 .btn-login:hover { background-color: var(--django-mid-green); }
+.btn-edit-inline {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.btn-edit-inline:hover {
+    color: var(--django-green-bright);
+    background: rgba(68, 183, 139, 0.1);
+}
+
 
 /* --- Главная страница --- */
 .main-content {
@@ -391,6 +407,195 @@ body {
 .artist-stats { font-size: 0.85rem; color: #9ca3af; margin: 0 0 12px; }
 .personal-actions { display: flex; gap: 10px; }
 .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; }
+
+.modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+    z-index: 1000; display: none;
+    align-items: center; justify-content: center;
+}
+.modal-content {
+    background: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: 16px; max-width: 400px; width: 90%; overflow: hidden;
+}
+.modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.modal-body { padding: 1.5rem; }
+.modal-footer {
+    display: flex; justify-content: flex-end; gap: 0.75rem;
+    padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.06);
+}
+.modal-close {
+    background: none; border: none; color: var(--text-muted);
+    cursor: pointer; font-size: 1.2rem;
+}
+
+.side-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.side-panel-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Панель */
+.side-panel {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100vh;
+  background: var(--bg-card);
+  border-left: 1px solid var(--border-color);
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.side-panel.active {
+  right: 0;
+}
+
+/* Шапка панели */
+.side-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.side-panel-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-main);
+}
+
+.side-panel-username {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.side-panel-email {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.btn-close-panel {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-close-panel:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Ссылки */
+.side-panel-body {
+  flex: 1;
+  padding: 1rem 0;
+}
+
+.panel-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.panel-link:hover {
+  background: rgba(68, 183, 139, 0.08);
+  color: var(--django-green-bright);
+}
+
+.panel-link i {
+  width: 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Футер панели */
+.side-panel-footer {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.logout-link {
+  color: #ef4444 !important;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.logout-link:hover {
+  background: rgba(239, 68, 68, 0.08) !important;
+  color: #ef4444 !important;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Кнопка "Войти" */
+#loginBtn {
+    display: none;  /* скрыта по умолчанию, покажет JS */
+    white-space: nowrap;
+}
+
+/* Круглая кнопка профиля */
+.profile-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Адаптив */
+@media (max-width: 400px) {
+  .side-panel {
+    width: 100%;
+    right: -100%;
+  }
+}
 
 /* --- Адаптивность --- */
 @media (max-width: 768px) {

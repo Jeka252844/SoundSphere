@@ -1,6 +1,48 @@
+let currentUser = null;
+
+function editField(field) {
+    document.getElementById(`editRow-${field}`).style.display = 'flex';
+    const input = document.getElementById(`edit${field.charAt(0).toUpperCase() + field.slice(1)}`);
+    if (input) {
+        const key = field === 'phone' ? 'phone_number' : field;
+        input.value = currentUser[key] || '';
+        input.focus();
+    }
+}
+
+function cancelField(field) {
+    document.getElementById(`editRow-${field}`).style.display = 'none';
+}
+
+async function saveField(field) {
+    const token = localStorage.getItem('access_token');
+    const input = document.getElementById(`edit${field.charAt(0).toUpperCase() + field.slice(1)}`);
+    let value = input?.value.trim();
+    
+    const key = field === 'phone' ? 'phone_number' : field;
+    
+    if (value === '') value = null;
+    
+    const res = await fetch('/users/update/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ [key]: value })
+    });
+    
+    if (res.ok) {
+        currentUser[key] = value;
+        const displayId = field === 'bio' ? 'profileBioText' : `profile${field.charAt(0).toUpperCase() + field.slice(1)}`;
+        document.getElementById(displayId).textContent = value || '—';
+        cancelField(field);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('access_token');
-    if (!token){
+    if (!token) {
         window.location.href = '/login/';
         return;
     }
@@ -8,9 +50,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const payload = JSON.parse(atob(token.split('.')[1]));
     const userId = payload.user_id;
     const response = await fetch(`/users/${userId}/`, {
-        headers: {'Authorization': `Bearer ${token}`}
+        headers: { 'Authorization': `Bearer ${token}` }
     });
     const user = await response.json();
+    
+    currentUser = user;
 
     document.getElementById('profileUsername').textContent = user.username;
     document.getElementById('profileEmail').textContent = user.email || '-';
@@ -18,86 +62,79 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('profileName').textContent = user.username;
     document.getElementById('profileRole').textContent = user.user_role;
     document.getElementById('profileBioText').textContent = user.bio || '-';
-    document.getElementById('userAvatar').src = user.avatar || "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+    document.getElementById('userAvatar').src = user.avatar || "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp";
 
-    const deleteProfileBtn = document.getElementById('deleteProfileBtn');
-    const editProfileBtn = document.getElementById('editProfileBtn');
-    const profileInfo = document.getElementById('profileInfo');
-    const profileEdit = document.getElementById('profileEdit');
-    const cancelEditBtn = document.getElementById('cancelEditBtn');
-    const profileEditForm = document.getElementById('profileEditForm');
-    const avatarInput = document.getElementById('avatarInput');
-
-    const username = document.getElementById('profileUsername').textContent;
-    const email = document.getElementById('profileEmail').textContent;
-    const phone = document.getElementById('profilePhone').textContent;
-    const bio = document.getElementById('profileBioText').textContent;
-    
-    editProfileBtn.addEventListener('click', () => {
-        profileInfo.style.display = 'none';
-        profileEdit.style.display = 'block';
-
-        document.getElementById('editUsername').value = username;
-        document.getElementById('editEmail').value = email;
-        document.getElementById('editPhone').value = phone;
-        document.getElementById('editBio').value = bio;
-    });
-
-    cancelEditBtn.addEventListener('click', ()=>{
-        profileInfo.style.display = 'block';
-        profileEdit.style.display = 'none';
-    });
-
-    profileEditForm.addEventListener('submit', async (e) =>{
-        e.preventDefault();
-        
-        const formData = new FormData();
-
-        if (username !== document.getElementById('editUsername').value){
-            formData.append('username', document.getElementById('editUsername').value);
-        }
-        if (email !== document.getElementById('editEmail').value){
-            formData.append('email', document.getElementById('editEmail').value);
-        }
-        if (phone !== document.getElementById('editPhone').value){
-            formData.append('phone_number', document.getElementById('editPhone').value);
-        }
-        if (bio !== document.getElementById('editBio').value){
-            formData.append('bio', document.getElementById('editBio').value);
-        }
-        
-        if (avatarInput.files[0]) {
-            formData.append('avatar', avatarInput.files[0]);
-        }
-
-        const response = await fetch('/users/update/', {
-            method: 'PATCH',
-            headers: {'Authorization': `Bearer ${token}`},
-            body: formData
-        });
-
-        if (response.ok) {
-            location.reload();
-        } else  {
-            const error = await response.json();
-            alert(Object.values(error).flat().join('\n'));
-            return;
-        }
-        
-    });
-
-    deleteProfileBtn.addEventListener('click', async () => {
-        ok = confirm('Вы точно хотите удалить аккаунт. После удаления его невозможно будет востановить.');
-        if (ok){
+    document.getElementById('deleteProfileBtn').addEventListener('click', async () => {
+        const ok = confirm('Вы точно хотите удалить аккаунт?');
+        if (ok) {
             const response = await fetch(`/users/${userId}/delete/`, {
                 method: 'DELETE',
-                headers: {'Authorization': `Bearer ${token}`}
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-            if (response.ok){
+            if (response.ok) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 window.location.href = '/';
             }
         }
     });
-}); 
+
+    document.getElementById('changePasswordBtn').addEventListener('click', () => {
+        document.getElementById('passwordModal').style.display = 'flex';
+        document.getElementById('oldPassword').value = '';
+        document.getElementById('newPassword1').value = '';
+        document.getElementById('newPassword2').value = '';
+        document.getElementById('passwordError').style.display = 'none';
+    });
+
+    function closePasswordModal() {
+        document.getElementById('passwordModal').style.display = 'none';
+    }
+
+    document.getElementById('passwordModal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closePasswordModal();
+    });
+
+    document.getElementById('submitPassword').addEventListener('click', async () => {
+        const oldPass = document.getElementById('oldPassword').value;
+        const newPass1 = document.getElementById('newPassword1').value;
+        const newPass2 = document.getElementById('newPassword2').value;
+        const errorDiv = document.getElementById('passwordError');
+        
+        // Проверки
+        if (!oldPass || !newPass1 || !newPass2) {
+            errorDiv.textContent = 'Заполните все поля';
+            errorDiv.style.display = 'block';
+            return;
+        }
+        
+        if (newPass1 !== newPass2) {
+            errorDiv.textContent = 'Пароли не совпадают';
+            errorDiv.style.display = 'block';
+            return;
+        }
+        
+        const token = localStorage.getItem('access_token');
+        const response = await fetch('/users/password/update/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ 
+                old_password: oldPass, 
+                new_password: newPass1 
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            alert('Пароль успешно изменён');
+            closePasswordModal();
+        } else {
+            errorDiv.textContent =(data.error || 'Ошибка');
+            errorDiv.style.display = 'block';
+        }
+    });
+});

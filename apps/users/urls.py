@@ -2,7 +2,8 @@ from django.urls import path
 from apps.users.views import (UserListAPIView, UserCreateAPIView, UserDetailAPIView, 
 UserPasswordUpdateAPIView, UserDeleteAPIView, UserUpdateAPIView, FollowToggleAPIView,
 PlayListDetailAPIView, PlayListCreateAPIView, PlayListsUpdateAPIView, PlayListDeleteAPIView,
-PlayListAddTrackAPIView, PlayListRemoveTrackAPIView, PlayListListAPIView, PlayListLikeAPIView)
+PlayListAddTrackAPIView, PlayListRemoveTrackAPIView, PlayListListAPIView, PlayListLikeAPIView,
+TopPlaylistsWeeklyView)
 
 app_name= 'users'
 
@@ -26,5 +27,6 @@ urlpatterns = [
     path('playlist/<int:pk>/delete/', PlayListDeleteAPIView.as_view(), name='playlist_delete'),
     path('playlist/<int:pk>/add/', PlayListAddTrackAPIView.as_view(), name='playlist_add'),
     path('playlist/<int:pk>/remove/', PlayListRemoveTrackAPIView.as_view(), name='playlist_remove'),
-    path('playlist/<int:playlist_id>/like/', PlayListLikeAPIView.as_view(), name='playlist_like'),
+    path('playlist/<int:pk>/like/', PlayListLikeAPIView.as_view(), name='playlist_like'),
+    path('playlist/top/', TopPlaylistsWeeklyView.as_view(), name='top_weekly_playlists')
 ]

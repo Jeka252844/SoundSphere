@@ -40,6 +40,13 @@ class UserUpdateAPIView(UpdateAPIView):
     def get_object(self):
         user = self.request.user
         return User.objects.get(id = user.id)
+    
+    def update(self, request, *args, **kwargs):
+        partial = True
+        serializer = self.get_serializer(instance=request.user, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
 
 class UserPasswordUpdateAPIView(GenericAPIView):
     serializer_class = UserPasswordSerializer

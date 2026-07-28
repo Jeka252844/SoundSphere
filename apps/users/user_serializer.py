@@ -54,7 +54,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'phone_number', 'username', 'user_role', 'is_active', 'is_artist', 'bio', 'avatar')
+        fields = ('username', 'email', 'phone_number', 'bio', 'avatar')
+        extra_kwargs = {
+            'username': {'required': False},
+            'email': {'required': False},
+            'phone_number': {'required': False, 'allow_null': True},
+            'bio': {'required': False, 'allow_blank': True},
+        }
 
 
 class UserPasswordSerializer(serializers.Serializer):

@@ -16,6 +16,7 @@ urlpatterns = [
     path('track/card/<int:track_id>/', views.track_card, name='track_card'),
     path('profile/', views.profile, name='profile'),
     path('playlist/', views.playlist, name='playlist'),
+    path('playlist/<int:playlist_id>/detail/', views.playlist_detail, name='playlist_detail'),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('player/', views.player, name='player'),

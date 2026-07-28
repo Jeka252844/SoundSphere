@@ -22,6 +22,9 @@ def profile(request):
 def playlist(request):
     return render(request, 'playlist.html')
 
+def playlist_detail(request, playlist_id):
+    return render(request, 'playlist_detail.html', {'playlist_id': playlist_id})
+
 def login(request):
     return render(request, 'login.html')
 
@@ -30,7 +33,7 @@ def register(request):
 
 def player(request):
     track_id = request.GET.get('track_id', 1)
-    track = Track.objects.filter(track_id=track_id).first()
+    track = Track.objects.filter(id=track_id).first()
     return render(request, 'player.html', {'track': track})
 
 def artists(request):

@@ -45,5 +45,5 @@ def artist_profile_my_view(request):
 def artist_profile_view(request, artist_id):
     return render(request, 'artist_profile.html', {'artist_id': artist_id, 'is_my': False})
 
-def album(request):
-    return render(request, 'album.html')
+def album(request, album_id):
+    return render(request, 'album.html', {'album_id': album_id})

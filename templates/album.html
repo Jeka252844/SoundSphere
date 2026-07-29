@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <link rel="stylesheet" href="{% static 'css/album.css' %}">
+    <script src="{% static 'js/album.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<script>
+    const ALBUM_ID = "{{ album_id|default:'' }}";
+</script>
+
+<div class="album-page">
+
+    <div class="album-header">
+        <button class="btn-back" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i> Назад
+        </button>
+        <div class="album-header-content">
+            <div id="albumCoverContainer">
+                <div class="skeleton album-cover"></div>
+            </div>
+            <div style="flex:1;">
+                <p class="album-type">Альбом</p>
+                <h1 class="album-title" id="albumTitle">Загрузка...</h1>
+                <p class="album-artist" id="albumArtist"></p>
+                <p class="album-info" id="albumInfo"></p>
+            </div>
+        </div>
+        <div class="album-actions">
+            <button class="btn btn-primary" id="playAllBtn">
+                <i class="fas fa-play"></i> Играть все
+            </button>
+            <button class="btn-like" id="likeAlbumBtn">
+                <i class="far fa-heart"></i> <span id="albumLikesCount">0</span>
+            </button>
+            <button class="btn btn-outline-secondary" id="shareAlbumBtn">
+                <i class="fas fa-share"></i> Поделиться
+            </button>
+        </div>
+    </div>
+
+    <div class="album-tracks-section">
+        <div class="track-list" id="albumTracksList">
+            <p class="text-muted p-3">Загрузка треков...</p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

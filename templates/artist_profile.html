@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <link rel="stylesheet" href="{% static 'css/artist_profile.css' %}">
+    <script src="{% static 'js/artist_profile.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<script>
+    const ARTIST_ID = "{{ artist_id|default:'' }}";
+    const IS_MY = "{{ is_my }}" === "True";
+</script>
+
+<div style="margin: 0 auto;">
+
+    <div class="artist-header">
+        <button class="btn-back" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i> Назад
+        </button>
+        <div class="artist-header-content">
+            <div id="artistAvatarContainer">
+                <div class="skeleton skeleton-avatar"></div>
+            </div>
+            <div style="flex:1;">
+                <h1 id="artistName">Загрузка...</h1>
+                <p id="artistFollowers"></p>
+                <p id="artistBio" class="small"></p>
+            </div>
+        </div>
+        <div class="artist-actions">
+            <button class="btn btn-primary btn-sm" id="shareBtn" disabled>
+                <i class="fas fa-share"></i> Поделиться
+            </button>
+        </div>
+    </div>
+
+    <!-- АЛЬБОМЫ -->
+    <section class="section-container mt-4">
+        <h3 class="section-title">Альбомы</h3>
+        <div class="track-list" id="albumsList">
+            <p class="p-3">Загрузка...</p>
+        </div>
+    </section>
+</div>
+<div class="avatar-modal-overlay" id="avatarModal" style="display:none;">
+    <div class="avatar-modal-content">
+        <button class="avatar-modal-close" id="closeAvatarModal">✕</button>
+        <img id="avatarModalImg" src="" alt="" class="avatar-modal-img">
+        <button class="btn btn-primary btn-sm" id="changeAvatarBtn">
+            <i class="fas fa-camera"></i> Сменить аватар
+        </button>
+        <input type="file" id="avatarFileInput" accept="image/*" style="display:none;">
+    </div>
+</div>
+<div class="modal-overlay" id="editArtistModal" style="display:none;">
+    <div class="modal-content" style="max-width: 440px;">
+        <div class="modal-header">
+            <h3>Редактировать профиль</h3>
+            <button class="modal-close" id="closeEditModal">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <label class="small">Имя артиста</label>
+                <input type="text" id="editArtistName" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label class="small">О себе</label>
+                <textarea id="editArtistBio" class="form-control" rows="3" placeholder="Расскажите о себе..."></textarea>
+            </div>
+            <div id="editArtistError" class="text-danger small" style="display:none;"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm btn-outline-secondary" id="cancelEditBtn">Отмена</button>
+            <button class="btn btn-sm btn-success" id="saveArtistBtn">Сохранить</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

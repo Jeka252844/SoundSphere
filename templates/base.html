@@ -47,7 +47,7 @@
             </div>
     
             <div class="nav-actions">
-                <a id="loginBtn" href="{% url 'login' %}" class="btn btn-login">Войти</a>
+                <a id="loginBtn" href="{% url 'login' %}" class="btn btn-login">Регистрация</a>
 
                 <button id="profileBtn" class="btn btn-login profile-btn">
                     <i class="fas fa-user-circle fa-lg"></i>
@@ -80,7 +80,7 @@
                     <a href="/playlist/" class="panel-link auth-required locked">
                         <i class="fas fa-list"></i> Мои плейлисты
                     </a>
-                    <a href="#" class="panel-link locked">
+                    <a href="{% url 'artist_profile_my' %}" class="panel-link locked">
                         <i class="fas fa-microphone"></i> Профиль артиста
                     </a>
                     <a href="#" class="panel-link locked">

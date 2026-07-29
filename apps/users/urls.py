@@ -3,7 +3,7 @@ from apps.users.views import (UserListAPIView, UserCreateAPIView, UserDetailAPIV
 UserPasswordUpdateAPIView, UserDeleteAPIView, UserUpdateAPIView, FollowToggleAPIView,
 PlayListDetailAPIView, PlayListCreateAPIView, PlayListsUpdateAPIView, PlayListDeleteAPIView,
 PlayListAddTrackAPIView, PlayListRemoveTrackAPIView, PlayListListAPIView, PlayListLikeAPIView,
-TopPlaylistsWeeklyView)
+TopPlaylistsWeeklyView, verify_email)
 
 app_name= 'users'
 
@@ -15,6 +15,9 @@ urlpatterns = [
     path('update/', UserUpdateAPIView.as_view(), name='update_user'),
     path('password/update/', UserPasswordUpdateAPIView.as_view(), name='update_password'),
     path('<int:pk>/delete/', UserDeleteAPIView.as_view(), name='delete_user'),
+
+    # verify-email
+    path('verify-email/<uuid:token>/', verify_email, name='verify-email'),
 
     # follow
     path('<int:pk>/follow/', FollowToggleAPIView.as_view(), name='follow'),

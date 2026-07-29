@@ -1,12 +1,16 @@
-from django.shortcuts import render
 from rest_framework.generics import (ListAPIView, CreateAPIView, GenericAPIView, 
     UpdateAPIView, DestroyAPIView, RetrieveAPIView)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404
 
-from apps.users.models import User, Follow, PlayList, PlayListTrack, PlayListLike
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.core.mail import EmailMessage
+from django.conf import settings
+import threading
+
+from apps.users.models import User, Follow, PlayList, PlayListTrack, PlayListLike, EmailVerificationToken
 from apps.artists.models import Artist
 from apps.tracks.models import Track
 from apps.users.permissions import IsAdmin, IsModerator, IsOwner
@@ -15,7 +19,7 @@ from apps.users.user_serializer import (UserSerializer, UserCreateSerializer,
  UserUpdateSerializer, UserPasswordSerializer)
 from apps.users.playlist_serializer import (PlayListSerializer,
  PlayListCreateSerializer, PlayListUpdateSerializer)
-from apps.users.services import PlaylistService
+from apps.users.services import PlaylistService, UserService
 
 class UserListAPIView(ListAPIView):
     queryset = User.objects.all()
@@ -26,6 +30,42 @@ class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
     permission_classes = (AllowAny, )
+
+    def perform_create(self, serializer):
+        user = serializer.save(is_active=False)
+        token = EmailVerificationToken.objects.create(user=user)
+
+        verify_url = f'{settings.SITE_URL}/users/verify-email/{token.token}/'
+
+        email = EmailMessage(
+            'Подтверждение почты SoundSphere',
+            f'Перейдите по ссылке для подтверждения почты:\n{verify_url}',
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+        )
+        email.send(fail_silently=False)
+        threading.Thread(target=UserService.delete_unverified_user, args=(user.id, ), daemon=True).start()
+
+def verify_email(request, token):
+    try:
+        verification = EmailVerificationToken.objects.get(token=token)
+        verification.user.is_active = True
+        verification.user.save()
+        verification.delete()
+        
+        return HttpResponse('''
+            <script>
+                localStorage.setItem('email_verified', 'true');
+                window.close();
+            </script>
+            <h2>Успешная регистрация</h2>
+        ''')
+    except EmailVerificationToken.DoesNotExist:
+        return HttpResponse('''
+            <div style="text-align:center;padding:50px;background:#111;color:#fff;min-height:100vh;">
+                <h2 style="color:#ef4444;">❌ Неверная или устаревшая ссылка</h2>
+            </div>
+        ''')
 
 class UserDetailAPIView(RetrieveAPIView):
     queryset = User.objects.all()

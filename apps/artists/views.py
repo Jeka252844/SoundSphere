@@ -15,7 +15,7 @@ from apps.users.permissions import IsOwner, IsAdmin, IsArtist, IsModerator
 class ArtistListAPIView(ListAPIView):
     queryset = Artist.objects.all()
     serializer_class =  ArtistSerializer
-    permission_classes = (IsModerator, )
+    permission_classes = (AllowAny, )
 
 class ArtistDetailAPIView(RetrieveAPIView):
     queryset = Artist.objects.all()

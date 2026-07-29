@@ -39,5 +39,11 @@ def player(request):
 def artists(request):
     return render(request, 'artists.html')
 
+def artist_profile_my_view(request):
+    return render(request, 'artist_profile.html', {'is_my': True})
+
+def artist_profile_view(request, artist_id):
+    return render(request, 'artist_profile.html', {'artist_id': artist_id, 'is_my': False})
+
 def album(request):
     return render(request, 'album.html')

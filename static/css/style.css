@@ -595,6 +595,79 @@ body {
     background-color: #111;
 }
 
+.form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--django-green);
+}
+
+.form-container .form-outline {
+    margin-bottom: 1rem;
+}
+
+.form-container .form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+}
+
+.form-container .form-control:focus {
+    border-color: var(--django-green);
+    box-shadow: 0 0 0 2px rgba(68, 183, 139, 0.15);
+    outline: none;
+}
+
+.form-container .form-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.form-container .btn-primary {
+    width: 100%;
+    background-color: var(--django-green);
+    border: none;
+    padding: 0.75rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+}
+
+.form-container .btn-primary:hover {
+    background-color: var(--django-green-bright);
+}
+
+.form-container .text-center {
+    margin-top: 1rem;
+    color: var(--text-muted);
+}
+
+.form-container .text-center a {
+    color: var(--django-green);
+    text-decoration: none;
+}
+
+.form-container .text-center a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        margin: 1rem;
+        padding: 1.5rem 1rem;
+    }
+}
+
 @media (max-width: 768px) {
     .profile-page {
         width: 95%;

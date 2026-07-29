@@ -1,9 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
-    if (!registerForm) {
-        alert('Данные не найдены');
-        return;
-    }
+    if (!registerForm) return;
 
     registerForm.addEventListener('submit', async function(e){
         e.preventDefault();
@@ -24,8 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         if (response.ok){
-            alert("Регистрация успешна");
-            window.location.href = '/login/';
+            const email = this.email.value;
+            registerForm.style.display = 'none';
+            document.getElementById('verifyEmail').textContent = email;
+            document.getElementById('verifyModal').style.display = 'flex';
+
+            const checkInterval = setInterval(() => {
+                if (localStorage.getItem('email_verified') === 'true') {
+                    localStorage.removeItem('email_verified');
+                    clearInterval(checkInterval);
+                    alert('Регистрация успешно завершена!');
+                    window.location.href = '/login/';
+                }
+            }, 2000);
         } else {
             const data = await response.json();
             alert(Object.values(data).flat().join('\n'));

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+import uuid
 
 from apps.artists.models import Artist
 from apps.tracks.models import Track
@@ -29,6 +30,18 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return self.username
+
+class EmailVerificationToken(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    token = models.UUIDField(default=uuid.uuid4, unique=True, verbose_name='токен')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+
+    class Meta:
+        verbose_name = 'Токен подтверждения почты'
+        verbose_name_plural = 'Токены подтверждения почты'
+
+    def __str__(self):
+        return f'{self.user.email}'
 
 class PlayList(models.Model):
     title = models.CharField(max_length=200, verbose_name=_("Название плейлиста"))

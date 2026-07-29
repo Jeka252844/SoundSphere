@@ -152,6 +152,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'soundsphere@mail.ru'
+SITE_URL = 'http://127.0.0.1:8000'
+EMAIL_USE_LOCALTIME = True
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [

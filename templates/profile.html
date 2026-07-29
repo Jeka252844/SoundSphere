@@ -6,15 +6,16 @@
 {% endblock extra_js %}
 
 {% block content %}
-<section style="background-color: #111; width: 900px; margin: 0 auto;">
+<section class="profile-page">
   <div class="container py-5">
 		<div id="profileInfo" class="profile">
     	<div class="row">
 				<div class="col-lg-4">
 					<div class="card mb-4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(68,183,139,0.2);">
 						<div class="card-body text-center">
-							<img class="text-white-50" id="userAvatar" src="" alt="avatar"
-								class="rounded-circle img-fluid" style="width: 150px;">
+							<img class="text-white-50 rounded-circle" id="userAvatar" src="" alt="avatar"
+								style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;">
+							<input type="file" id="avatarInput" accept="image/*" style="display:none;">
 							<h5 class="my-3 text-white" id="profileName">Загрузка...</h5>
 							<p class="text-white-50 mb-1" id="profileRole"></p>
 						</div>

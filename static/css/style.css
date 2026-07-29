@@ -589,6 +589,43 @@ body {
     flex-shrink: 0;
 }
 
+.profile-page {
+    width: 65%;
+    margin: 0 auto;
+    background-color: #111;
+}
+
+@media (max-width: 768px) {
+    .profile-page {
+        width: 95%;
+    }
+    
+    /* Лейбл и значение в одну строку */
+    .profile-page .row.align-items-center {
+        flex-wrap: nowrap;
+    }
+    
+    .profile-page .col-sm-3 {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 60px;
+    }
+    
+    .profile-page .col-sm-7 {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .profile-page .col-sm-2 {
+        flex: 0 0 auto;
+        width: auto;
+    }
+    
+    .profile-page .btn-edit-inline {
+        padding: 2px 4px;
+    }
+}
+
 /* Адаптив */
 @media (max-width: 400px) {
   .side-panel {

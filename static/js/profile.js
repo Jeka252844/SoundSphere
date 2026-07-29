@@ -1,5 +1,9 @@
 let currentUser = null;
 
+function closePasswordModal() {
+    document.getElementById('passwordModal').style.display = 'none';
+}
+
 function editField(field) {
     document.getElementById(`editRow-${field}`).style.display = 'flex';
     const input = document.getElementById(`edit${field.charAt(0).toUpperCase() + field.slice(1)}`);
@@ -64,6 +68,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('profileBioText').textContent = user.bio || '-';
     document.getElementById('userAvatar').src = user.avatar || "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp";
 
+    const avatarEl = document.getElementById('userAvatar');
+    const avatarInput = document.getElementById('avatarInput');
+
+    if (avatarEl && avatarInput) {
+        avatarEl.addEventListener('click', () => avatarInput.click());
+        
+        avatarInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const formData = new FormData();
+            formData.append('avatar', file);
+            
+            const res = await fetch('/users/update/', {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+            
+            if (res.ok) {
+                const data = await res.json();
+                avatarEl.src = data.avatar;
+            }
+        });
+    }
+
     document.getElementById('deleteProfileBtn').addEventListener('click', async () => {
         const ok = confirm('Вы точно хотите удалить аккаунт?');
         if (ok) {
@@ -87,9 +117,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('passwordError').style.display = 'none';
     });
 
-    function closePasswordModal() {
-        document.getElementById('passwordModal').style.display = 'none';
-    }
 
     document.getElementById('passwordModal').addEventListener('click', (e) => {
         if (e.target === e.currentTarget) closePasswordModal();

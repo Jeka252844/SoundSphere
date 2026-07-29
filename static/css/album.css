@@ -1,0 +1,260 @@
+.album-page {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.album-header {
+    background: linear-gradient(180deg, rgba(9, 46, 32, 0.6), rgba(4, 13, 9, 1));
+    border-radius: 0 0 16px 16px;
+    padding: 1.5rem 1.5rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.album-cover {
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.album-header-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.album-header-content > div:last-child {
+    padding-top: 0.25rem;
+}
+
+.album-type {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #999;
+    margin: 0 0 0.75rem;  
+}
+
+.album-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.75rem;
+    line-height: 1.2;
+}
+
+.album-artist {
+    font-size: 0.95rem;
+    color: var(--django-green);
+    margin: 0 0 0.75rem;
+    font-weight: 500;
+}
+
+.album-info {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin: 0;
+}
+
+.album-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.album-actions .btn {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+    border-radius: 50px;
+    font-weight: 600;
+}
+
+.album-actions .btn-primary {
+    background-color: var(--django-green);
+    color: var(--bg-dark);
+    border: none;
+}
+
+.album-actions .btn-primary:hover {
+    background-color: var(--django-green-bright);
+}
+
+.album-actions .btn-outline-secondary {
+    background: transparent;
+    color: #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.album-actions .btn-outline-secondary:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+
+.btn-like {
+    background: transparent;
+    color: #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-like:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.btn-like.liked {
+    color: #ef4444;
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.album-tracks-section {
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+}
+
+.track-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.track-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.track-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.track-number {
+    width: 24px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.track-row-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-row-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #eee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-row-artist {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 1px;
+}
+
+.track-row-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.track-stat {
+    font-size: 0.75rem;
+    color: #777;
+}
+
+.track-time {
+    font-size: 0.8rem;
+    color: #999;
+    font-variant-numeric: tabular-nums;
+    min-width: 36px;
+    text-align: right;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    padding: 0.4rem 0.75rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background: rgba(0, 0, 0, 0.6);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (max-width: 600px) {
+    .album-header {
+        padding: 1rem;
+    }
+    
+    .album-header-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .album-cover {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .album-title {
+        font-size: 1.25rem;
+    }
+    
+    .album-actions {
+        justify-content: center;
+    }
+    
+    .track-stat {
+        display: none;
+    }
+}

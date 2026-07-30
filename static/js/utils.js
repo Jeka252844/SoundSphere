@@ -80,3 +80,67 @@ function showMessageModal(title, message, buttonText, buttonUrl) {
     });
 
 }
+
+function showReportModal(type, targetId, targetName) {
+    const token = localStorage.getItem('access_token');
+    const modal = document.getElementById('reportModal');
+    
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:440px;">
+            <div class="modal-header">
+                <h3> Жалоба</h3>
+                <button class="modal-close" id="closeReportModal">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-track-name">${targetName}</p>
+                <label class="report-label">Причина:</label>
+                <select id="reportReason" class="report-select">
+                    <option value="">Выберите причину...</option>
+                    <option value="copyright">Нарушение авторских прав</option>
+                    <option value="inappropriate">Неприемлемый контент</option>
+                    <option value="spam">Спам</option>
+                    <option value="fake">Подделка</option>
+                    <option value="other">Другое</option>
+                </select>
+                <label class="report-label">Описание:</label>
+                <textarea id="reportDescription" class="report-textarea" rows="3" placeholder="Опишите проблему..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-outline-secondary" id="cancelReport">Отмена</button>
+                <button class="btn btn-sm btn-success" id="submitReport">Отправить</button>
+            </div>
+        </div>
+    `;
+    modal.style.display = 'flex';
+
+    function close() { modal.style.display = 'none'; }
+
+    document.getElementById('closeReportModal').addEventListener('click', close);
+    document.getElementById('cancelReport').addEventListener('click', close);
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+
+    document.getElementById('submitReport').addEventListener('click', async () => {
+        const reason = document.getElementById('reportReason').value;
+        const description = document.getElementById('reportDescription').value;
+        if (!reason) return alert('Выберите причину');
+
+        const res = await fetch('/api/social/report/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                type: type,
+                target_id: targetId,
+                reason,
+                description
+            })
+        });
+
+        if (res.ok) {
+            alert('Жалоба отправлена');
+            close();
+        }
+    });
+}

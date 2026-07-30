@@ -1,0 +1,354 @@
+.track-detail-card {
+    width: 100%;
+    max-width: 440px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+/* --- Кнопка Назад (поверх карточки) --- */
+.btn-back {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    padding: 0.4rem 0.75rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background: rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-back svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* --- Обложка с текстом поверх --- */
+.track-detail-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 300px;
+    background-color: #111;
+    border-bottom: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.default-avatar-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.track-detail-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* --- Текст поверх обложки --- */
+.track-detail-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.5rem 1.5rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+    z-index: 2;
+}
+
+.track-detail-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 0.25rem;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.track-detail-artist {
+    font-size: 1.1rem;
+    color: var(--django-green);
+    font-weight: 500;
+    margin: 0;
+    cursor: pointer;
+    transition: color 0.2s;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.track-detail-artist:hover {
+    color: var(--django-green-bright);
+}
+
+/* --- Футер (выше) --- */
+.track-detail-footer {
+    background-color: rgba(6, 26, 18, 1);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border-top: 1px solid rgba(68, 183, 139, 0.1);
+}
+
+/* --- Кнопка "Слушать" --- */
+.btn-listen-main {
+    width: 100%;
+    background-color: var(--django-green);
+    color: var(--bg-dark);
+    font-size: 1.125rem;
+    font-weight: 700;
+    padding: 0.85rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    font-family: inherit;
+}
+
+.btn-listen-main:hover {
+    background-color: var(--django-green-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(68, 183, 139, 0.4);
+}
+
+/* --- Кнопки действий --- */
+.track-actions-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.5rem;
+}
+
+.action-icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    transition: color 0.2s;
+    font-family: inherit;
+}
+
+.action-icon-btn:hover {
+    color: #ffffff;
+}
+
+.action-icon-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.action-icon-btn span {
+    font-size: 0.65rem;
+    font-weight: 500;
+}
+
+.report-btn:hover {
+    color: #ef4444 !important;
+}
+
+/* ============================================ */
+/*           МОДАЛЬНОЕ ОКНО ЖАЛОБЫ              */
+/* ============================================ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    max-width: 440px;
+    width: 90%;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.modal-header h3 {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #ffffff;
+}
+
+.modal-close svg {
+    width: 20px;
+    height: 20px;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-track-name {
+    font-size: 0.95rem;
+    color: var(--django-green);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.report-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+.report-label:first-of-type {
+    margin-top: 0;
+}
+
+.report-select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.report-select:focus {
+    border-color: var(--django-green);
+}
+
+.report-select option {
+    background: var(--bg-dark);
+    color: #ffffff;
+}
+
+.report-textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.report-textarea:focus {
+    border-color: var(--django-green);
+}
+
+.report-textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================ */
+/*           АДАПТИВНОСТЬ                       */
+/* ============================================ */
+
+@media (max-width: 480px) {
+    .track-detail-card {
+        max-width: 100%;
+        border-radius: 0;
+    }
+    
+    .track-detail-cover {
+        max-height: 250px;
+    }
+    
+    .track-detail-overlay {
+        padding: 1.5rem 1rem 1rem;
+    }
+    
+    .track-detail-title {
+        font-size: 1.4rem;
+    }
+    
+    .track-detail-artist {
+        font-size: 1rem;
+    }
+    
+    .track-detail-footer {
+        padding: 1.5rem 1.25rem;
+    }
+}

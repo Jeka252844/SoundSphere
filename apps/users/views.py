@@ -3,6 +3,7 @@ from rest_framework.generics import (ListAPIView, CreateAPIView, GenericAPIView,
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
+from rest_framework import status
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -176,7 +177,7 @@ class PlayListAddTrackAPIView(GenericAPIView):
         track = get_object_or_404(Track, pk=request.data.get('track_id'))
         obj, created = PlayListTrack.objects.get_or_create(playlist=playlist, track=track)
         if not created:
-            return Response({'error': 'Трек уже в плейлисте'})
+            return Response({'error': 'Трек уже в плейлисте'}, status=status.HTTP_409_CONFLICT)
         return Response({'status': "added"})
     
 class PlayListRemoveTrackAPIView(GenericAPIView):

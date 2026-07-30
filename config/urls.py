@@ -35,6 +35,7 @@ urlpatterns = [
     path('users/', include('apps.users.urls', namespace='users')),
     path('api/tracks/', include('apps.tracks.urls')),
     path('api/artists/', include('apps.artists.urls')),
+    path('api/social/', include('apps.social.urls')),
 
     # token
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair')

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <script src="{% static 'js/album_create.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="form-container" style="max-width:500px;">
+    <h2>Создать альбом</h2>
+
+    <form id="albumCreateForm" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Название альбома</label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Обложка</label>
+            <input type="file" name="cover" class="form-control" accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Создать альбом</button>
+    </form>
+</div>
+{% endblock %}

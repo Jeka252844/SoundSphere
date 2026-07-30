@@ -66,13 +66,31 @@ async function renderAlbum(album, token) {
     }
 
     if (isOwner) {
+        document.getElementById('likeAlbumBtn').style.display = 'none';
+    
         document.getElementById('addTrackContainer').innerHTML = `
             <button class="btn btn-outline-secondary" id="addTrackBtn">
                 <i class="fas fa-plus"></i> Добавить трек
             </button>
+            <button class="btn btn-outline-danger btn-sm" id="deleteAlbumBtn">
+                <i class="fas fa-trash"></i>
+            </button>
         `;
+        
         document.getElementById('addTrackBtn').addEventListener('click', () => {
             window.location.href = `/tracks/create/?album_id=${album.id}`;
+        });
+        
+        document.getElementById('deleteAlbumBtn').addEventListener('click', async () => {
+            if (!confirm('Удалить альбом?')) return;
+            const res = await fetch(`/api/artists/album/${album.id}/delete/`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                alert('Альбом удалён');
+                window.location.href = document.referrer || '/artist/my/';
+            }
         });
     }
 

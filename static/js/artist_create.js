@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (res.ok) {
             alert('Артист создан!');
-            window.location.href = document.referrer || '/artist/my/';
+            window.location.replace(document.referrer || '/artist/my/');
         } else {
             const data = await res.json();
             alert(Object.values(data).flat().join('\n'));

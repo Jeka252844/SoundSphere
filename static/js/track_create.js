@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (res.ok) {
             alert('Трек загружен!');
-            window.location.href = document.referrer || '/tracks/';
+            window.location.replace(document.referrer || '/tracks/');
         } else {
             const data = await res.json();
             alert(Object.values(data).flat().join('\n'));

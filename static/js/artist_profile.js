@@ -248,7 +248,10 @@ function renderArtistProfile(artist, isOwner) {
     
     // Поделиться
     document.getElementById('shareBtn').addEventListener('click', () => {
-        navigator.clipboard.writeText(window.location.href).then(() => alert('Ссылка скопирована'));
+        const shareUrl = isOwner 
+            ? `${window.location.origin}/artist/${artist.id}/`
+            : window.location.href;
+        navigator.clipboard.writeText(shareUrl).then(() => alert('Ссылка скопирована'));
     });
 
     // Альбомы

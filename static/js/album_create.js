@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (res.ok) {
             const data = await res.json();
-            window.location.href = `/album/${data.id}/`;
+            window.location.replace(`/album/${data.id}/`);
         } else {
             const data = await res.json();
             alert(Object.values(data).flat().join('\n'));

@@ -42,6 +42,9 @@ def player(request):
 def artists(request):
     return render(request, 'artists.html')
 
+def artist_create(request):
+    return render(request, 'artist_create.html')
+
 def artist_profile_my_view(request):
     return render(request, 'artist_profile.html', {'is_my': True})
 

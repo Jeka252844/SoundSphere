@@ -42,3 +42,41 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+function showMessageModal(title, message, buttonText, buttonUrl) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.style.display = 'flex';
+    overlay.innerHTML = `
+        <div class="modal-content" style="max-width:400px;text-align:center;">
+            <div class="modal-body" style="padding:2rem;">
+                <div style="font-size:2.5rem;margin-bottom:0.75rem;">⚠️</div>
+                <h3 style="color:#fff;margin-bottom:0.5rem;">${title}</h3>
+                <p >${message}</p>
+                <button class="btn btn-primary mt-3" id="modalActionBtn">${buttonText}</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    document.getElementById('modalActionBtn').addEventListener('click', () => {
+        overlay.remove();
+        if (buttonUrl === 'back') {
+            history.back();
+        } else if (buttonUrl) {
+            window.location.href = buttonUrl;
+        }
+    });
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.remove();
+            if (history.length > 1) {
+                history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+    });
+
+}

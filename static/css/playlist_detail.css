@@ -1,0 +1,391 @@
+.playlist-detail-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* --- Шапка --- */
+.playlist-header {
+    background: linear-gradient(180deg, rgba(9,46,32,0.6), var(--bg-dark));
+    border-radius: 0 0 16px 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #ccc;
+    padding: 0.4rem 0.75rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: inherit;
+    transition: all 0.2s;
+    margin-bottom: 0.5rem;
+}
+
+.btn-back:hover {
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+}
+
+.btn-back svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* --- Контент шапки --- */
+.playlist-header-content {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end;
+    margin-top: 0.75rem;
+}
+
+.playlist-header-info {
+    flex: 1;
+    min-width: 0;
+    padding-left: 0.25rem;
+}
+
+.playlist-type {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #999;
+    margin: 0 0 0.5rem;
+}
+
+.playlist-name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+}
+
+.playlist-author {
+    font-size: 0.95rem;
+    color: var(--django-green);
+    margin: 0 0 0.5rem;
+    font-weight: 500;
+}
+
+.playlist-stats {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin: 0;
+}
+
+
+.playlist-header-cover {
+    width: 140px;
+    height: 140px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #111;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.playlist-header-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Кнопки действий --- */
+.playlist-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+.btn-listen-main {
+    flex: 1;
+    background: var(--django-green);
+    color: var(--bg-dark);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.65rem 1rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.btn-listen-main:hover {
+    background: var(--django-green-bright);
+}
+
+.playlist-action-btns {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-muted);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-size: 0.8rem;
+}
+
+.action-btn:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.3);
+}
+
+.action-btn.liked {
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+.action-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* --- Секция треков --- */
+.playlist-tracks-section {
+    padding: 0 1.5rem;
+}
+
+.track-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.track-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.track-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.track-row-cover {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.05);
+}
+
+.track-row-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-row-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #eee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-row-artist {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 1px;
+}
+
+.track-row-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.track-time {
+    font-size: 0.8rem;
+    color: #999;
+    font-variant-numeric: tabular-nums;
+}
+
+/* --- Адаптив --- */
+@media (max-width: 600px) {
+    .playlist-header-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .playlist-header-cover {
+        width: 120px;
+        height: 120px;
+    }
+
+    .playlist-name {
+        font-size: 1.4rem;
+    }
+
+    .playlist-header-actions {
+        flex-direction: column;
+    }
+    
+    .btn-listen-main {
+        width: 100%;
+    }
+    
+    .playlist-tracks-section {
+        padding: 0 1rem;
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid rgba(68, 183, 139, 0.2);
+    border-radius: 16px;
+    max-width: 420px;
+    width: 90%;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.modal-header h3 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 1.25rem;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #fff;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-track-name {
+    font-size: 0.95rem;
+    color: var(--django-green);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.report-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #999;
+    margin: 1rem 0 0.4rem;
+}
+
+.report-label:first-of-type {
+    margin-top: 0;
+}
+
+.report-select {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.report-select:focus {
+    border-color: var(--django-green);
+}
+
+.report-select option {
+    background: #111;
+    color: #fff;
+}
+
+.report-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.report-textarea:focus {
+    border-color: var(--django-green);
+}
+
+.report-textarea::placeholder {
+    color: #666;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}

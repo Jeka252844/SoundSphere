@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_css %}
+{% block extra_js %}
     <link rel="stylesheet" href="{% static 'css/playlist_detail.css' %}">
+    <script src="{% static 'js/playlist_detail.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 <div class="playlist-detail-wrapper">
+    <script>
+        const PLAYLIST_ID = "{{ playlist_id|default:'' }}";
+    </script>
+
     <div class="playlist-header">
         <button class="btn-back" onclick="history.back()">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,6 +53,6 @@
             <p class="text-muted text-center py-4">Загрузка треков...</p>
         </div>
     </div>
-
 </div>
+<div class="modal-overlay" id="reportModal" style="display:none;"></div>
 {% endblock content %}

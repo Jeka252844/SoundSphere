@@ -1,45 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const token = localStorage.getItem('access_token');
-    const userPlaylistsDiv = document.getElementById('userPlaylists');
     const topPlaylistsDiv = document.getElementById('topPlaylists');
 
     loadTopPlaylists();
-
-    if (!token) {
-        userPlaylistsDiv.innerHTML = `
-            <div class="text-center py-4">
-                <p class="text-muted">Войдите в аккаунт или зарегистрируйтесь, чтобы создавать свои плейлисты</p>
-            </div>`;
-    } else {
-        loadUserPlaylists(token);
-    }
-
-    async function loadUserPlaylists(token) {
-        try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const userId = payload.user_id;
-
-            const response = await fetch(`/users/${userId}/`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-
-            if (!response.ok) throw new Error('Ошибка загрузки');
-
-            const user = await response.json();
-            const playlists = user.playlists;
-
-            if (!playlists || playlists.length === 0) {
-                userPlaylistsDiv.innerHTML = '<p class="text-muted text-center py-4">У вас пока нет плейлистов</p>';
-                return;
-            }
-
-            userPlaylistsDiv.innerHTML = renderPlaylists(playlists);
-
-        } catch (err) {
-            console.error(err);
-            userPlaylistsDiv.innerHTML = '<p class="text-danger text-center py-4">Ошибка загрузки плейлистов</p>';
-        }
-    }
 
     async function loadTopPlaylists() {
         try {
@@ -58,9 +20,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             topPlaylistsDiv.innerHTML = renderPlaylists(playlists);
 
-        } catch (err) {
-            console.error(err);
-            topPlaylistsDiv.innerHTML = '<p class="text-muted text-center py-4">Не удалось загрузить</p>';
+        }  catch (err) {
+            showMessageModal('Ошибка загрузки', 'Не удалось загрузить плейлисты', 'Назад', 'back');
         }
     }
 

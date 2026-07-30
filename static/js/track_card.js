@@ -32,6 +32,18 @@ async function renderTrackCard(track, token) {
         coverContainer.innerHTML = `<img src="${track.cover}" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">`;
     } else {
         coverContainer.innerHTML = getDefaultCoverSVG('100%', '100%', '0');
+        
+        const svg = coverContainer.querySelector('svg');
+        if (svg) {
+            svg.style.maxWidth = 460;
+            svg.removeAttribute('viewBox');  
+            svg.setAttribute('preserveAspectRatio', 'none');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '100%');
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            
+        }
     }
 
     let isOwner = false;

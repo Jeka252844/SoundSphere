@@ -25,8 +25,14 @@ def profile(request):
 def playlist(request):
     return render(request, 'playlist.html')
 
+def my_playlists(request):
+    return render(request, 'my_playlists.html')
+
 def playlist_detail(request, playlist_id):
     return render(request, 'playlist_detail.html', {'playlist_id': playlist_id})
+
+def playlist_create(request):
+    return render(request, 'playlist_create.html')
 
 def login(request):
     return render(request, 'login.html')

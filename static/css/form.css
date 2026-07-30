@@ -1,0 +1,95 @@
+.form-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--django-green);
+    font-size: 1.4rem;
+}
+
+.form-container .form-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+.form-container .form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    width: 100%;
+    transition: border-color 0.2s;
+}
+
+.form-container .form-control:focus {
+    border-color: var(--django-green);
+    box-shadow: 0 0 0 2px rgba(68, 183, 139, 0.15);
+    outline: none;
+}
+
+.form-container select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.form-container select.form-control option {
+    background: var(--bg-dark);
+    color: #fff;
+}
+
+.form-container input[type="file"].form-control {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+.form-container .btn-primary {
+    width: 100%;
+    background-color: var(--django-green);
+    border: none;
+    padding: 0.75rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: var(--bg-dark);
+    font-family: inherit;
+    margin-top: 0.5rem;
+}
+
+.form-container .btn-primary:hover {
+    background-color: var(--django-green-bright);
+}
+
+.form-container .form-control::placeholder {
+    color: #888;
+    opacity: 1;
+}
+
+.form-container textarea.form-control::placeholder {
+    color: #888;
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        margin: 1rem;
+        padding: 1.5rem 1rem;
+    }
+}

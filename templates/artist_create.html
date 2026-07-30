@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <script src="{% static 'js/artist_create.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="form-container" style="max-width:500px;">
+    <h2>Стать исполнителем</h2>
+
+    <form id="artistCreateForm" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Имя артиста</label>
+            <input type="text" name="name" class="form-control" placeholder="Ваше имя" style="--placeholder-color:#999;" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">О себе</label>
+            <textarea name="bio" class="form-control" rows="3" placeholder="Расскажите о себе..." style="--placeholder-color:#999;"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Аватар</label>
+            <input type="file" name="avatar" class="form-control" accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Создать профиль</button>
+    </form>
+</div>
+{% endblock %}

@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from apps.tracks.models import Track, Genre
 from apps.tracks.services import TrackService
 from apps.users.permissions import IsArtist, IsModerator, IsAdmin, IsOwner
-from apps.tracks.track_serializer import TrackSerializer, TrackCreateSerializer, TrackUpdateSerializer
+from apps.tracks.track_serializer import TrackSerializer, TrackCreateSerializer, TrackUpdateSerializer, GenreSerializer
 
 class TracksListAPIView(ListAPIView):
     queryset = Track.objects.all()
@@ -51,3 +51,8 @@ class SearchTracksView(ListAPIView):
         artist_name = self.request.GET.get('artist_name')
         page = self.request.GET.get('page', 1)
         return TrackService.search_track(query, genre_name, artist_name, int(page))
+
+class GenreListAPIView(ListAPIView):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+    permission_classes = (AllowAny, )

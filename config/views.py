@@ -13,6 +13,9 @@ def docs(request):
 def tracks(request):
     return render(request, 'tracks.html')
 
+def track_create(request):
+    return render(request, 'track_create.html')
+
 def track_card(request, track_id):
     return render(request, 'track_card.html', {'track_id': track_id})
 

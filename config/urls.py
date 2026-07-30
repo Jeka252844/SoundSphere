@@ -13,6 +13,7 @@ urlpatterns = [
     path('docs/', views.docs, name='documentation'),
     path('about/', views.about, name='about'),
     path('tracks/', views.tracks, name='tracks'),
+    path('tracks/create/', views.track_create, name='track_create'),
     path('track/card/<int:track_id>/', views.track_card, name='track_card'),
     path('profile/', views.profile, name='profile'),
     path('playlist/', views.playlist, name='playlist'),

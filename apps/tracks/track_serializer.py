@@ -2,7 +2,11 @@ from rest_framework import serializers
 from mutagen import File as MutagenFile
 
 from apps.tracks.models import Track, Genre
-from apps.artists.models import Album, Artist
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields =('id', 'name', 'display', 'slug')
 
 class TrackSerializer(serializers.ModelSerializer):
     artist_name = serializers.CharField(source='artist.name', read_only=True)

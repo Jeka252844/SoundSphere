@@ -25,6 +25,7 @@ urlpatterns = [
     path('artist/create/', views.artist_create, name='artist_create'),
     path('artist/my/', views.artist_profile_my_view, name='artist_profile_my'),
     path('artist/<int:artist_id>/', views.artist_profile_view, name='artist_profile'),
+    path('album/create/', views.album_create, name='album_create'),
     path('album/<int:album_id>/', views.album, name='album'),
 
     # base_url

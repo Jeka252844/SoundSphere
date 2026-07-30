@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             if (data.cover) {
-                coverContainer.innerHTML = `<img src="${data.cover}" class="track-row-cover" alt="">`;
+                coverContainer.innerHTML = `<img src="${data.cover}" class="track-image track-row-cover" alt="">`;
             } else {
                 coverContainer.innerHTML = getDefaultCoverSVG('80', '80', '100');
             }

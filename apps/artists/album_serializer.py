@@ -12,7 +12,7 @@ class AlbumSerializer(serializers.ModelSerializer):
 class AlbumCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Album
-        fields = ('title', 'cover')
+        fields = ('id','title', 'cover', 'release_date')
         extra_kwargs = {
             "title": {"required": True},
             "cover": {"required": False}

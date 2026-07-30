@@ -53,3 +53,6 @@ def artist_profile_view(request, artist_id):
 
 def album(request, album_id):
     return render(request, 'album.html', {'album_id': album_id})
+
+def album_create(request):
+    return render(request, 'album_create.html')

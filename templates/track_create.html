@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <script src="{% static 'js/track_create.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="form-container" style="max-width:500px;">
+    <h2>Загрузить трек</h2>
+    <p class="text-muted small" id="albumHint" style="display:none;"></p>
+
+    <form id="trackCreateForm" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label class="form-label">Название</label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Альбом</label>
+            <select name="album" id="albumSelect" class="form-control" required>
+                <option value="">Загрузка альбомов...</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Жанр</label>
+            <select name="genre" class="form-control" required>
+                <option value="">Загрузка жанров...</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Обложка</label>
+            <input type="file" name="cover" class="form-control" accept="image/*">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Аудиофайл</label>
+            <input type="file" name="audio_file" class="form-control" accept="audio/*" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Загрузить</button>
+    </form>
+</div>
+{% endblock %}

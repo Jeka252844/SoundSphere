@@ -70,3 +70,6 @@ def album(request, album_id):
 
 def album_create(request):
     return render(request, 'album_create.html')
+
+def policy_view(request):
+    return render(request, 'policy.html')

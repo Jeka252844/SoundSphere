@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     registerForm.addEventListener('submit', async function(e){
         e.preventDefault();
 
+        if (!document.getElementById('agreePolicy').checked) {
+            alert('Необходимо согласиться с политикой конфиденциальности');
+            return;
+        }
+
         if (this.password.value != this.password2.value){
             alert('Пароли не совпадают');
             return;

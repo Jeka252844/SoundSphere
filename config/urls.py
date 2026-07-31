@@ -43,6 +43,7 @@ urlpatterns = [
     path('artist/<int:artist_id>/', views.artist_profile_view, name='artist_profile'),
     path('album/create/', views.album_create, name='album_create'),
     path('album/<int:album_id>/', views.album, name='album'),
+    path('policy/', views.policy_view, name='policy'),
 
     # base_url
     path('admin/', admin.site.urls),

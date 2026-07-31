@@ -109,6 +109,18 @@ async function renderPlaylist(data, token) {
             </button>
         `;
 
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const userId = payload.user_id;
+                const checkRes = await fetch(`/users/playlist/${playlistId}/like/check/?user_id=${userId}`);
+                const checkData = await checkRes.json();
+                if (checkData.is_liked) {
+                    document.getElementById('btnLike').classList.add('liked');
+                }
+            } catch(e) {}
+        }
+
         document.getElementById('btnLike').addEventListener('click', async () => {
             if (!token) return alert('Войдите чтобы лайкнуть');
             const res = await fetch(`/users/playlist/${playlistId}/like/`, {
@@ -143,4 +155,5 @@ async function renderPlaylist(data, token) {
             window.location.href = `/track/card/${row.dataset.trackId}/`;
         }
     });
+    
 }

@@ -7,6 +7,10 @@
 {% endblock %}
 
 {% block content %}
+<script>
+    const TRACKS_LIST = JSON.parse('{{ tracks_list|safe }}');
+</script>
+
 <div class="container">
     <div class="audio-player" data-track-id="{{track.id}}"> 
         <!-- Track Info -->

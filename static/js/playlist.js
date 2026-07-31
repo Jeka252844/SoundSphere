@@ -35,7 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 <div class="playlist-info">
                     <h3 class="playlist-title">${escapeHtml(pl.title)}</h3>
-                    <p class="playlist-likes">${pl.tracks_count || 0} треков</p>
+                    <p class="playlist-likes">
+                        ❤️ ${pl.likes || 0} • ${pl.tracks_count || 0} треков
+                    </p>
                     <div class="playlist-actions">
                         <button class="btn btn-primary btn-small open-playlist-btn" data-id="${pl.id}">
                             Открыть
@@ -45,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
         `).join('');
     }
+
 
     document.addEventListener('click', (e)=>{
         const openButton = e.target.closest('.open-playlist-btn');

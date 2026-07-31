@@ -43,7 +43,15 @@ def register(request):
 def player(request):
     track_id = request.GET.get('track_id', 1)
     track = Track.objects.filter(id=track_id).first()
-    return render(request, 'player.html', {'track': track})
+    if not track:
+        track = Track.objects.first()
+    
+    tracks_list = Track.objects.values_list('id', flat=True)
+    
+    return render(request, 'player.html', {
+        'track': track,
+        'tracks_list': list(tracks_list)
+    })
 
 def artists(request):
     return render(request, 'artists.html')

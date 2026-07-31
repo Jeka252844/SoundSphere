@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import status
+from rest_framework.views import APIView
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -40,7 +41,7 @@ class UserCreateAPIView(CreateAPIView):
 
         email = EmailMessage(
             'Подтверждение почты SoundSphere',
-            f'Перейдите по ссылке для подтверждения почты:\n{verify_url}',
+            f'Перейдите по ссылке:\n\n{verify_url}',
             settings.DEFAULT_FROM_EMAIL,
             [user.email],
         )
@@ -205,6 +206,18 @@ class PlayListLikeAPIView(GenericAPIView):
             return Response({'status': 'unliked', 'likes': playlist.playlist_like.count()})
 
         return Response({'status': 'liked', 'likes': playlist.playlist_like.count()})
+
+class PlaylistLikeCheckAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        user_id = request.GET.get('user_id')
+        if not user_id:
+            return Response({'is_liked': False})
+        
+        playlist = get_object_or_404(PlayList, pk=pk)
+        is_liked = PlayListLike.objects.filter(playlist=playlist, user_id=user_id).exists()
+        return Response({'is_liked': is_liked})
 
 class TopPlaylistsWeeklyView(ListAPIView):
     serializer_class = PlayListSerializer

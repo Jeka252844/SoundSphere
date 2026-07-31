@@ -3,7 +3,7 @@ from apps.users.views import (UserListAPIView, UserCreateAPIView, UserDetailAPIV
 UserPasswordUpdateAPIView, UserDeleteAPIView, UserUpdateAPIView, FollowToggleAPIView,
 PlayListDetailAPIView, PlayListCreateAPIView, PlayListsUpdateAPIView, PlayListDeleteAPIView,
 PlayListAddTrackAPIView, PlayListRemoveTrackAPIView, PlayListListAPIView, PlayListLikeAPIView,
-TopPlaylistsWeeklyView, verify_email)
+TopPlaylistsWeeklyView, PlaylistLikeCheckAPIView, verify_email)
 
 app_name= 'users'
 
@@ -31,5 +31,6 @@ urlpatterns = [
     path('playlist/<int:pk>/add/', PlayListAddTrackAPIView.as_view(), name='playlist_add'),
     path('playlist/<int:pk>/remove/', PlayListRemoveTrackAPIView.as_view(), name='playlist_remove'),
     path('playlist/<int:pk>/like/', PlayListLikeAPIView.as_view(), name='playlist_like'),
+    path('playlist/<int:pk>/like/check/', PlaylistLikeCheckAPIView.as_view(), name='playlist_like_check'),
     path('playlist/top/', TopPlaylistsWeeklyView.as_view(), name='top_weekly_playlists')
 ]

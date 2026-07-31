@@ -3,10 +3,12 @@ from mutagen import File as MutagenFile
 
 from apps.tracks.models import Track, Genre
 
+
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields =('id', 'name', 'display', 'slug')
+        fields = ('id', 'name', 'display', 'slug')
+
 
 class TrackSerializer(serializers.ModelSerializer):
     artist_name = serializers.CharField(source='artist.name', read_only=True)
@@ -18,7 +20,7 @@ class TrackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
         fields = (
-            'id', 'title', 'duration', 'plays_count', 'cover', 
+            'id', 'title', 'duration', 'plays_count', 'cover',
             'audio_file', 'created_at',
             # Вложенные
             'artist_id', 'artist_name',
@@ -49,10 +51,11 @@ class TrackCreateSerializer(serializers.ModelSerializer):
             try:
                 audio_info = MutagenFile(audio)
                 validated_data['duration'] = int(audio_info.info.length)
-            except:
+            except Exception:
                 validated_data['duration'] = 0
         return super().create(validated_data)
-    
+
+
 class TrackUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
@@ -71,7 +74,7 @@ class TrackUpdateSerializer(serializers.ModelSerializer):
         if audio:
             try:
                 audio_info = MutagenFile(audio)
-                validated_data['duration']= int(audio_info.info.length)
-            except:
+                validated_data['duration'] = int(audio_info.info.length)
+            except Exception:
                 validated_data['duration'] = 0
         return super().update(instance, validated_data)

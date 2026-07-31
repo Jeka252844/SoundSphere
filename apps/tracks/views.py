@@ -1,5 +1,7 @@
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, 
-CreateAPIView, UpdateAPIView, DestroyAPIView)
+from rest_framework.generics import (
+    ListAPIView, RetrieveAPIView,
+    CreateAPIView, UpdateAPIView, DestroyAPIView
+)
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -11,15 +13,18 @@ from apps.tracks.services import TrackService
 from apps.users.permissions import IsArtist, IsModerator, IsAdmin, IsOwner
 from apps.tracks.track_serializer import TrackSerializer, TrackCreateSerializer, TrackUpdateSerializer, GenreSerializer
 
+
 class TracksListAPIView(ListAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
     permission_classes = (IsModerator, )
 
+
 class TrackDetailAPIView(RetrieveAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
     permission_classes = (AllowAny, )
+
 
 class TrackCreateAPIView(CreateAPIView):
     queryset = Track.objects.all()
@@ -29,14 +34,17 @@ class TrackCreateAPIView(CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(artist=self.request.user.artist)
 
+
 class TrackUpdateAPIView(UpdateAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackUpdateSerializer
     permission_classes = (IsOwner, )
 
+
 class TrackDeleteAPIView(DestroyAPIView):
     queryset = Track.objects.all()
-    permission_classes = (IsOwner| IsAdmin, )
+    permission_classes = (IsOwner | IsAdmin, )
+
 
 class TopTracksWeeklyView(ListAPIView):
     serializer_class = TrackSerializer
@@ -44,17 +52,19 @@ class TopTracksWeeklyView(ListAPIView):
 
     def get_queryset(self):
         return TrackService.get_top_tracks_weekly()
-    
+
+
 class SearchTracksView(ListAPIView):
     serializer_class = TrackSerializer
     permission_classes = (AllowAny, )
-    
+
     def get_queryset(self):
         query = self.request.GET.get('query', '')
         genre_name = self.request.GET.get('genre_name')
         artist_name = self.request.GET.get('artist_name')
         page = self.request.GET.get('page', 1)
         return TrackService.search_track(query, genre_name, artist_name, int(page))
+
 
 class TrackLikeAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -75,6 +85,7 @@ class TrackLikeAPIView(APIView):
             'likes': track.track_likes.count()
         })
 
+
 class TrackLikeCheckAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -85,6 +96,7 @@ class TrackLikeCheckAPIView(APIView):
         track = get_object_or_404(Track, pk=pk)
         is_liked = TrackLike.objects.filter(track=track, user_id=user_id).exists()
         return Response({'is_liked': is_liked})
+
 
 class GenreListAPIView(ListAPIView):
     queryset = Genre.objects.all()

@@ -1,9 +1,11 @@
 from django.urls import path
 
-from apps.artists.views import (ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView,
-ArtistDeleteAPIView, ArtistUpdateAPIView, SearchAristsView, GetTopArtistsView, CheckFollowAPIView,
-AlbumCreateAPIView, AlbumDetailAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView, AlbumListAPIView,
-AlbumLikeAPIView, AlbumLikeCheckAPIView)
+from apps.artists.views import (
+    ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView,
+    ArtistDeleteAPIView, ArtistUpdateAPIView, SearchAristsView, GetTopArtistsView, CheckFollowAPIView,
+    AlbumCreateAPIView, AlbumDetailAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView, AlbumListAPIView,
+    AlbumLikeAPIView, AlbumLikeCheckAPIView
+)
 
 
 app_name = 'artists'

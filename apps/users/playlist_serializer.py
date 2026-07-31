@@ -4,10 +4,11 @@ from apps.users.models import PlayList
 from apps.tracks.models import Track
 from apps.tracks.track_serializer import TrackSerializer
 
+
 class PlayListSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     likes = serializers.SerializerMethodField()
-    tracks_count =serializers.SerializerMethodField()
+    tracks_count = serializers.SerializerMethodField()
     tracks = serializers.SerializerMethodField()
 
     class Meta:
@@ -25,21 +26,22 @@ class PlayListSerializer(serializers.ModelSerializer):
         tracks = Track.objects.filter(id__in=track_ids)
         return TrackSerializer(tracks, many=True).data
 
+
 class PlayListCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayList
-        fields = ('id', 'title', 'is_public', 'user') 
+        fields = ('id', 'title', 'is_public', 'user')
         extra_kwargs = {
             'title': {'required': True},
             'is_public': {'required': False},
-            'user': {'read_only': True}, 
+            'user': {'read_only': True},
         }
 
-    
+
 class PlayListUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayList
-        fields = ('title','is_public')
+        fields = ('title', 'is_public')
         extra_kwargs = {
             'title': {'required': False},
             'is_public': {"required": False}

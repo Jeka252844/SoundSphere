@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class Artist(models.Model):
     name = models.CharField(max_length=200, verbose_name=_("Имя"))
     bio = models.TextField(blank=True, null=True, verbose_name=_("Биография"))
@@ -13,9 +14,10 @@ class Artist(models.Model):
         indexes = [
             models.Index(fields=['name'])
         ]
-    
+
     def __str__(self):
         return self.name
+
 
 class Album(models.Model):
     title = models.CharField(max_length=300, verbose_name=_("Название"))
@@ -31,9 +33,10 @@ class Album(models.Model):
             models.Index(fields=['title']),
             models.Index(fields=['artist'])
         ]
-    
+
     def __str__(self):
         return self.title
+
 
 class AlbumLike(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='album_like', verbose_name='Альбом')
@@ -41,7 +44,7 @@ class AlbumLike(models.Model):
     liked_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name= 'Лайк альбома'
+        verbose_name = 'Лайк альбома'
         verbose_name_plural = 'Лайки альбома'
         unique_together = ['album', 'user']
 

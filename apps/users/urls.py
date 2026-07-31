@@ -1,11 +1,14 @@
 from django.urls import path
-from apps.users.views import (UserListAPIView, UserCreateAPIView, UserDetailAPIView, 
-UserPasswordUpdateAPIView, UserDeleteAPIView, UserUpdateAPIView, FollowToggleAPIView,
-PlayListDetailAPIView, PlayListCreateAPIView, PlayListsUpdateAPIView, PlayListDeleteAPIView,
-PlayListAddTrackAPIView, PlayListRemoveTrackAPIView, PlayListListAPIView, PlayListLikeAPIView,
-TopPlaylistsWeeklyView, PlaylistLikeCheckAPIView, verify_email)
+from apps.users.views import (
+    UserListAPIView, UserCreateAPIView, UserDetailAPIView,
+    UserPasswordUpdateAPIView, UserDeleteAPIView, UserUpdateAPIView,
+    FollowToggleAPIView, PlayListDetailAPIView, PlayListCreateAPIView,
+    PlayListsUpdateAPIView, PlayListDeleteAPIView, PlayListAddTrackAPIView,
+    PlayListRemoveTrackAPIView, PlayListListAPIView, PlayListLikeAPIView,
+    TopPlaylistsWeeklyView, PlaylistLikeCheckAPIView, verify_email,
+)
 
-app_name= 'users'
+app_name = 'users'
 
 urlpatterns = [
     # user

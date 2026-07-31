@@ -1,10 +1,12 @@
 from django.urls import path
 
-from apps.tracks.views import (TracksListAPIView ,TrackDetailAPIView, SearchTracksView, TrackCreateAPIView,
-TrackUpdateAPIView, TrackDeleteAPIView, TopTracksWeeklyView, GenreListAPIView, TrackLikeAPIView,
-TrackLikeCheckAPIView)
+from apps.tracks.views import (
+    TracksListAPIView, TrackDetailAPIView, SearchTracksView, TrackCreateAPIView,
+    TrackUpdateAPIView, TrackDeleteAPIView, TopTracksWeeklyView, GenreListAPIView, TrackLikeAPIView,
+    TrackLikeCheckAPIView
+)
 
-app_name='tracks'
+app_name = 'tracks'
 
 urlpatterns = [
     path('list/', TracksListAPIView.as_view(), name='track_list'),

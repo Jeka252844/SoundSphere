@@ -15,6 +15,7 @@ from mutagen.mp3 import MP3
 
 User = get_user_model()
 
+
 def run():
     # 1. ЖАНРЫ
     genres_data = [
@@ -39,7 +40,7 @@ def run():
     ]
     for i, name in enumerate(artist_names):
         try:
-            username = f'artist_{i+1}'
+            username = f'artist_{i + 1}'
             user, _ = User.objects.get_or_create(
                 username=username,
                 defaults={
@@ -62,7 +63,7 @@ def run():
             pass
     print(f'Артисты: {Artist.objects.count()}')
 
-    # 3. АЛЬБОМЫ 
+    # 3. АЛЬБОМЫ
     album_names = [
         'Midnight Drive', 'Neon Pulse', 'Acoustic Dreams',
         'Digital Horizon', 'Eclipse'
@@ -80,12 +81,12 @@ def run():
             pass
     print(f'Альбомы: {Album.objects.count()}')
 
-    # 4. ТРЕКИ 
+    # 4. ТРЕКИ
     main_artist = artists[5]
     track_data = [
         {
             'title': 'Сказочная тайга',
-            'genre': genres[0],# Rock
+            'genre': genres[0],  # Rock
             'audio_file': 'tracks/Agata_Kristi_-_Skazochnaya_tajjga_47829631.mp3',
             'cover': 'covers/2026-07-31_15-41-02.png'
         },
@@ -141,7 +142,7 @@ def run():
         except Exception as e:
             print(f'{td["title"]}: {e}')
 
-    # 5. ПЛЕЙЛИСТЫ 
+    # 5. ПЛЕЙЛИСТЫ
     playlists = []
     for i, artist in enumerate(artists[:5]):
         try:
@@ -167,7 +168,7 @@ def run():
     normal_users = []
     for i in range(15):
         try:
-            username = f'user_{i+1}'
+            username = f'user_{i + 1}'
             user, _ = User.objects.get_or_create(
                 username=username,
                 defaults={'email': f'{username}@mail.com'}
@@ -227,9 +228,9 @@ def run():
 
     User.objects.get_or_create(
         name='admin',
-        user_role = 'admin',
-        email = 'admin@ad.ad',
-        password = 'admin123'
+        user_role='admin',
+        email='admin@ad.ad',
+        password='admin123'
     )
 
     print('\nГОТОВО! Можно зайти как:')

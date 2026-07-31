@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from apps.social.models import Report
 
+
 class ReportCreateAPIView(APIView):
     permission_classes = [IsAuthenticated]
 

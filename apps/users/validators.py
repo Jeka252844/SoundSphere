@@ -1,6 +1,7 @@
 import re
 from django.core.exceptions import ValidationError
 
+
 class PasswordValidator:
     def __init__(self, field) -> None:
         self.field = field

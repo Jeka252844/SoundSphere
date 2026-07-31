@@ -1,12 +1,13 @@
 from django.db import models
 
+
 class Report(models.Model):
     REPORT_TYPES = [
         ('track', 'Трек'),
         ('album', 'Альбом'),
         ('artist', 'Артист'),
     ]
-    
+
     type = models.CharField(max_length=20, choices=REPORT_TYPES)
     target_id = models.IntegerField()
     reason = models.CharField(max_length=50)

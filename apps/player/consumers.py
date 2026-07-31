@@ -14,12 +14,13 @@ from apps.analitics.models import ListeningHistory
 
 User = get_user_model()
 
+
 class PlayerConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         query_string = self.scope['query_string'].decode()
         params = parse_qs(query_string)
         token = params.get('token', [None])[0]
-        
+
         if token:
             try:
                 access_token = AccessToken(token)
@@ -54,7 +55,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
         elif command == 'seek':
             position = data.get('position', 0)
             await self.send(text_data=json.dumps({'type': "seeked", 'position': position}))
-        
+
     async def stream_track(self, track_id):
         track = await database_sync_to_async(Track.objects.get)(id=track_id)
         if not track.audio_file:
@@ -93,16 +94,16 @@ class PlayerConsumer(AsyncWebsocketConsumer):
                 try:
                     await self.send(bytes_data=chunk)
                 except Exception:
-                    break 
+                    break
                 offset += chunk_size
                 await asyncio.sleep(0.05)
 
             await asyncio.sleep(1.0)
-            
+
             try:
                 await self.send(text_data=json.dumps({'type': 'end_of_stream'}))
             except Exception:
-                pass 
+                pass
 
         except Exception as e:
             try:
@@ -119,7 +120,7 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             else:
                 user = None
 
-            await  database_sync_to_async(ListeningHistory.objects.create)(
+            await database_sync_to_async(ListeningHistory.objects.create)(
                 track=track,
                 user=user
             )
@@ -128,6 +129,6 @@ class PlayerConsumer(AsyncWebsocketConsumer):
             await database_sync_to_async(track.save)()
 
             print(f'Записано прослушивание: {track.title}')
-        
+
         except Exception as e:
             print(f'Ошибка записи прослушивания: {e}')

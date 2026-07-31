@@ -4,6 +4,7 @@ import time
 
 from apps.users.models import PlayList
 
+
 class UserService:
     @staticmethod
     def delete_unverified_user(user_id):
@@ -15,6 +16,7 @@ class UserService:
             user.delete()
         except User.DoesNotExist:
             pass
+
 
 class PlaylistService:
     @staticmethod

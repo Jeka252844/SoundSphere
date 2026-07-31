@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import ListeningHistory
 
+
 @admin.register(ListeningHistory)
 class ListeningHistoryAdmin(admin.ModelAdmin):
     list_display = ('user', 'track', 'listened_at')

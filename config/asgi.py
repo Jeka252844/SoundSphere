@@ -17,5 +17,4 @@ application = ASGIStaticFilesHandler(
         'websocket': AuthMiddlewareStack(
             URLRouter(websocket_urlpatterns),
         )
-        
     }))

@@ -140,7 +140,8 @@ async function renderPlaylist(data, token) {
     // Играть все
     document.getElementById('btnPlayAll').addEventListener('click', () => {
         if (data.tracks?.length) {
-            window.location.href = `/player/?track_id=${data.tracks[0].id}`;
+            const trackIds = data.tracks.map(t => t.id).join(',');
+            window.location.href = `/player/?track_id=${data.tracks[0].id}&playlist=${trackIds}`;
         }
     });
 

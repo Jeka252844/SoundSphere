@@ -2,10 +2,24 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework.permissions import AllowAny
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from config import views
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="SoundSphere API",
+        default_version='v1',
+        description="Музыкальная платформа для независимых артистов",
+    ),
+    public=True,
+    permission_classes=[AllowAny],
+)
+
 
 urlpatterns = [
     # pages
@@ -38,8 +52,13 @@ urlpatterns = [
     path('api/tracks/', include('apps.tracks.urls')),
     path('api/artists/', include('apps.artists.urls')),
     path('api/social/', include('apps.social.urls')),
+    path('api/listening/', include('apps.analitics.urls')),
 
     # token
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair')
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+
+    # swagger
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + (
     static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

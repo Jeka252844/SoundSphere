@@ -144,9 +144,10 @@ async function renderAlbum(album, token) {
     }
 
     // Играть все
-    document.getElementById('playAllBtn')?.addEventListener('click', () => {
+    document.getElementById('playAllBtn').addEventListener('click', () => {
         if (album.tracks?.length) {
-            window.location.href = `/player/?track_id=${album.tracks[0].id}`;
+            const trackIds = album.tracks.map(t => t.id).join(',');
+            window.location.href = `/player/?track_id=${album.tracks[0].id}&playlist=${trackIds}`;
         }
     });
 

@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentTimeEl = document.querySelector('.time-info span:first-child');
     const durationEl = document.querySelector('.time-info span:last-child');
     const trackId = document.querySelector('.audio-player').dataset.trackId;
+    const urlParams = new URLSearchParams(window.location.search);
+    const playlistParam = urlParams.get('playlist');
+    if (playlistParam) {
+        TRACKS_LIST = playlistParam.split(',').map(Number);
+    }
     let currentTrackIndex = TRACKS_LIST.indexOf(parseInt(trackId));
 
     let socket = null;
@@ -153,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
             socket.close();
         }
         
-        socket = new WebSocket(`ws://${window.location.host}/ws/player/`);
+        socket = new WebSocket(`ws://${window.location.host}/ws/player/?token=${localStorage.getItem('access_token')}`);
 
         socket.onopen = async () => {
             console.log('WebSocket connected');
@@ -228,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bufferedEnd = sourceBuffer.buffered.end(sourceBuffer.buffered.length - 1);
         const currentPlayTime = audio ? audio.currentTime : 0;
         const remainingBuffer = bufferedEnd - currentPlayTime;
-        
+
         console.log(`Buffer: ${remainingBuffer.toFixed(1)}s remaining`);
         
         if (remainingBuffer < 5) return true;

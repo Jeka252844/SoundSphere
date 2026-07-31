@@ -8,7 +8,7 @@
 
 {% block content %}
 <script>
-    const TRACKS_LIST = JSON.parse('{{ tracks_list|safe }}');
+    let TRACKS_LIST = JSON.parse('{{ tracks_list|default:"[]"|safe }}');
 </script>
 
 <div class="container">

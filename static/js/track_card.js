@@ -74,9 +74,32 @@ async function renderTrackCard(track, token) {
         window.location.href = `/player/?track_id=${track.id}`;
     });
 
-    if (isOwner) {
+    if (!isOwner) {
         const likeBtn = document.querySelector('.action-icon-btn[title="Лайк"]');
-        if (likeBtn) likeBtn.style.display = 'none';
+        
+        likeBtn.querySelector('span').textContent = track.likes_count || 0;
+
+        if (token) {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            fetch(`/api/tracks/${track.id}/like/check/?user_id=${payload.user_id}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.is_liked) {
+                        likeBtn.style.color = '#ef4444';
+                    }
+                });
+        }
+
+        likeBtn.addEventListener('click', async () => {
+            if (!token) return alert('Войдите чтобы лайкнуть');
+            const res = await fetch(`/api/tracks/${track.id}/like/`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            likeBtn.querySelector('span').textContent = data.likes;
+            likeBtn.style.color = data.status === 'liked' ? '#ef4444' : '';
+        });
     }
 
     // Кнопка удалить

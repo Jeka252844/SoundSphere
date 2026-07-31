@@ -42,3 +42,11 @@ class Track(models.Model):
     
     def __str__(self):
         return self.title
+
+class TrackLike(models.Model):
+    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='track_likes')
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='track_likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('track', 'user')

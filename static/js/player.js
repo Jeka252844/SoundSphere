@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentTimeEl = document.querySelector('.time-info span:first-child');
     const durationEl = document.querySelector('.time-info span:last-child');
     const trackId = document.querySelector('.audio-player').dataset.trackId;
+    let currentTrackIndex = TRACKS_LIST.indexOf(parseInt(trackId));
 
     let socket = null;
     let isPlaying = false;
@@ -43,6 +44,77 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function playTrack(newTrackId) {
+        if (audio) {
+            audio.pause();
+            audio.src = '';
+        }
+        if (socket) {
+            socket.close();
+            socket = null;
+        }
+        clearInterval(progressInterval);
+        
+        currentTime = 0;
+        duration = 0;
+        canPlay = false;
+        pendingChunks = [];
+        isPlaying = false;
+        mediaSource = null;
+        sourceBuffer = null;
+        audio = null;
+        
+        currentTimeEl.textContent = '0:00';
+        durationEl.textContent = '0:00';
+        progress.style.width = '0%';
+        progressHandle.style.left = '0%';
+        playBtn.innerHTML = '<i class="fas fa-play fa-lg"></i>';
+
+        currentTrackIndex = TRACKS_LIST.indexOf(parseInt(newTrackId));
+
+        document.querySelector('.audio-player').dataset.trackId = newTrackId;
+        loadTrackCover(newTrackId);
+        fetch(`/api/tracks/${newTrackId}/`)
+            .then(r => r.json())
+            .then(track => {
+                document.querySelector('.h5.mb-1').textContent = track.title;
+                document.querySelector('.text-muted.mb-0').textContent = 
+                    (track.artist_name || '') + ' • ' + (track.album || '');
+            });
+
+        initMediaSource().then(() => {
+            connectWebSocket();
+            
+            const wait = setInterval(() => {
+                if (canPlay && !sourceBuffer.updating) {
+                    clearInterval(wait);
+                    audio.play();
+                    progressInterval = setInterval(updateProgress, 200);
+                    isPlaying = true;
+                    playBtn.innerHTML = '<i class="fas fa-pause fa-lg"></i>';
+                }
+            }, 200);
+            
+            setTimeout(() => clearInterval(wait), 15000);
+        });
+    }
+
+    function playNext() {
+        if (currentTrackIndex < TRACKS_LIST.length - 1) {
+            playTrack(TRACKS_LIST[currentTrackIndex + 1]);
+        }
+    }
+
+    function playPrev() {
+        if (currentTrackIndex > 0) {
+            playTrack(TRACKS_LIST[currentTrackIndex - 1]);
+        }
+    }
+
+    // Кнопки
+    document.querySelector('.fa-step-forward')?.parentElement.addEventListener('click', playNext);
+    document.querySelector('.fa-step-backward')?.parentElement.addEventListener('click', playPrev);
+
     function initMediaSource() {
         if (mediaSource && mediaSource.readyState === 'open') {
             try {
@@ -52,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         mediaSource = new MediaSource();
         audio = new Audio();
+        audio.volume = savedVolume;
         audio.src = URL.createObjectURL(mediaSource);
         sourceBuffer = null;
         canPlay = false;
@@ -84,12 +157,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         socket.onopen = async () => {
             console.log('WebSocket connected');
-            if (isReconnecting){
+            if (isReconnecting) {
                 reconnectAttempts = 0;
                 isReconnecting = false;
                 console.log('reconnecting successful');
             }
-            socket.send(JSON.stringify({ command: 'play', track_id: parseInt(trackId) }));
+            socket.send(JSON.stringify({ 
+                command: 'play', 
+                track_id: parseInt(document.querySelector('.audio-player').dataset.trackId) 
+            }));
         };
 
         socket.onmessage = (event) => {

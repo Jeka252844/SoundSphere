@@ -65,22 +65,46 @@ async function renderAlbum(album, token) {
         } catch(e) {}
     }
 
+    document.getElementById('albumLikesCount').textContent = album.likes || 0;
+
     if (isOwner) {
         document.getElementById('likeAlbumBtn').style.display = 'none';
-    
+
         document.getElementById('addTrackContainer').innerHTML = `
             <button class="btn btn-outline-secondary" id="addTrackBtn">
                 <i class="fas fa-plus"></i> Добавить трек
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" id="editAlbumBtn">
+                <i class="fas fa-pen"></i>
             </button>
             <button class="btn btn-outline-danger btn-sm" id="deleteAlbumBtn">
                 <i class="fas fa-trash"></i>
             </button>
         `;
-        
+
         document.getElementById('addTrackBtn').addEventListener('click', () => {
             window.location.href = `/tracks/create/?album_id=${album.id}`;
         });
-        
+
+        document.getElementById('editAlbumBtn').addEventListener('click', () => {
+            const newTitle = prompt('Новое название альбома:', album.title);
+            if (!newTitle || newTitle === album.title) return;
+            
+            fetch(`/api/artists/album/${album.id}/update/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ title: newTitle })
+            }).then(r => {
+                if (r.ok) {
+                    document.getElementById('albumTitle').textContent = newTitle;
+                    album.title = newTitle;
+                }
+            });
+        });
+
         document.getElementById('deleteAlbumBtn').addEventListener('click', async () => {
             if (!confirm('Удалить альбом?')) return;
             const res = await fetch(`/api/artists/album/${album.id}/delete/`, {
@@ -91,6 +115,31 @@ async function renderAlbum(album, token) {
                 alert('Альбом удалён');
                 window.location.href = document.referrer || '/artist/my/';
             }
+        });
+    } else {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const userId = payload.user_id;
+            const checkRes = await fetch(`/api/artists/album/like/${album.id}/check/?user_id=${userId}`);
+            const checkData = await checkRes.json();
+            if (checkData.is_liked) {
+                document.getElementById('likeAlbumBtn').classList.add('liked');
+            }
+        } catch(e) {}
+    }
+
+    if (!isOwner) {
+        document.getElementById('likeAlbumBtn').addEventListener('click', async () => {
+            if (!token) return alert('Войдите чтобы лайкнуть');
+            
+            const res = await fetch(`/api/artists/album/like/${album.id}/`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            
+            document.getElementById('albumLikesCount').textContent = data.likes;
+            document.getElementById('likeAlbumBtn').classList.toggle('liked', data.status === 'liked');
         });
     }
 
@@ -108,7 +157,7 @@ async function renderAlbum(album, token) {
     document.addEventListener('click', (e) => {
         const row = e.target.closest('.track-row');
         if (row?.dataset.trackId) {
-            window.location.href = `/player/?track_id=${row.dataset.trackId}`;
+            window.location.href = `/track/card/${row.dataset.trackId}/`;
         }
     });
 }

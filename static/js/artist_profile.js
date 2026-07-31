@@ -95,15 +95,17 @@ async function renderArtistProfile(artist, isOwner, token) {
         svg.style.height = '120px';
     }
 
-    const avatarEl = document.getElementById('artistAvatarContainer');
-    if (avatarEl) {
-        avatarEl.style.cursor = 'pointer';
-        avatarEl.addEventListener('click', () => {
-            const modal = document.getElementById('avatarModal');
-            const modalImg = document.getElementById('avatarModalImg');
-            modal.style.display = 'flex';
-            modalImg.src = artist.avatar || '';
-        });
+    if (isOwner) {
+        const avatarEl = document.getElementById('artistAvatarContainer');
+        if (avatarEl) {
+            avatarEl.style.cursor = 'pointer';
+            avatarEl.addEventListener('click', () => {
+                const modal = document.getElementById('avatarModal');
+                const modalImg = document.getElementById('avatarModalImg');
+                modal.style.display = 'flex';
+                modalImg.src = artist.avatar || '';
+            });
+        }
     }
 
     // Закрыть модалку
@@ -203,6 +205,7 @@ async function renderArtistProfile(artist, isOwner, token) {
                 window.location.href = '/profile/';
             }
         });
+
         document.getElementById('editArtistBtn').addEventListener('click', () => {
             document.getElementById('editArtistName').value = artist.name || '';
             document.getElementById('editArtistBio').value = artist.bio || '';

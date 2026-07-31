@@ -1,18 +1,18 @@
 from rest_framework.generics import (ListAPIView, RetrieveAPIView, 
-CreateAPIView, UpdateAPIView, DestroyAPIView)
+CreateAPIView, UpdateAPIView, DestroyAPIView, GenericAPIView)
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
-from apps.artists.models import Artist, Album
+from apps.artists.models import Artist, Album, AlbumLike
 from apps.artists.sevices import ArtistService
 from apps.artists.artist_serializer import (ArtistSerializer, 
 ArtistCreateSerializer, ArtistUpdateSerializer)
 from apps.artists.album_serializer import (AlbumSerializer,
 AlbumCreateSerializer, AlbumUpdateSerializer)
 
-from apps.users.models import User, Follow
+from apps.users.models import Follow
 from apps.users.permissions import IsOwner, IsAdmin, IsArtist, IsModerator
 
 class ArtistListAPIView(ListAPIView):
@@ -31,7 +31,10 @@ class ArtistCreateAPIView(CreateAPIView):
     permission_classes = (IsAuthenticated, )
 
     def perform_create(self, serializer):
-        serializer.save(user = self.request.user)
+        user = self.request.user
+        serializer.save(user=user)
+        user.is_artist = True
+        user.save()
 
 class ArtistUpdateAPIView(UpdateAPIView):
     queryset = Artist.objects.all()
@@ -49,6 +52,12 @@ class ArtistDeleteAPIView(DestroyAPIView):
         if self.request.user.user_role == 'admin':
             return super().get_object()  
         return self.request.user.artist
+
+    def perform_destroy(self, instance):
+        user = instance.user
+        instance.delete()
+        user.is_artist = False
+        user.save()
 
 class GetTopArtistsView(ListAPIView):
     serializer_class = ArtistSerializer
@@ -123,3 +132,30 @@ class AlbumDeleteAPIView(DestroyAPIView):
             id = self.kwargs['pk'],
             artist = self.request.user.artist
         )
+
+class AlbumLikeAPIView(GenericAPIView):
+    queryset = Album.objects.all()
+    permission_classes = (IsAuthenticated, )
+    def post(self, request, pk):
+        album = get_object_or_404(Album, pk=pk)
+        like, created = AlbumLike.objects.get_or_create(
+            album=album, user=request.user
+        )
+
+        if not created:
+            like.delete()
+            return Response({'status': 'unliked', 'likes': album.album_like.count()})
+
+        return Response({'status': 'liked', 'likes': album.album_like.count()})
+
+class AlbumLikeCheckAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        user_id = request.GET.get('user_id')
+        if not user_id:
+            return Response({'is_liked': False})
+        
+        album = get_object_or_404(Album, pk=pk)
+        is_liked = AlbumLike.objects.filter(album=album, user_id=user_id).exists()
+        return Response({'is_liked': is_liked})

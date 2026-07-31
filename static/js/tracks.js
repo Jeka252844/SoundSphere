@@ -10,28 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadTopTracks();
 
-    searchInput.addEventListener('focus', () => {
-        if (!searchInput.value.trim()) {
-            searchDropdown.classList.add('active');
-        }
-    });
 
-    document.addEventListener('click', (e) => {
-        if (!searchWrapper.contains(e.target)) {
-            searchDropdown.classList.remove('active');
-        }
-    });
 
-    searchDropdown.addEventListener('click', (e) => {
-        const item = e.target.closest('.dropdown-item');
-        if (item) {
-            const query = item.textContent.trim();
-            searchInput.value = query;
-            searchDropdown.classList.remove('active');
-            clearSearch.style.display = 'flex';
-            searchTracks(query);
-        }
-    });
 
     let searchTimeout;
     searchInput.addEventListener('input', () => {
@@ -43,11 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!query) {
             searchResults.style.display = 'none';
             defaultContent.style.display = 'block';
-            searchDropdown.classList.remove('active');  
             return;
         }
         
-        searchDropdown.classList.remove('active');  
         searchTimeout = setTimeout(() => searchTracks(query), 300);
     });
 
@@ -59,15 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.focus();
     });
 
-    document.addEventListener('click', (e) => {
-        const artist = e.target.closest('.track-row-artist');
-        if (artist) {
-            e.stopPropagation();
-            const artistId = artist.getAttribute('data-artist-id');
-            window.location.href = `/artists/?artist_id=${artistId}`;
-            return;
-        }
-    
+    document.addEventListener('click', (e) => {   
         const row = e.target.closest('.track-row');
         if (row?.dataset.trackId) {
             window.location.href = `/track/card/${row.dataset.trackId}/`;

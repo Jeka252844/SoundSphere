@@ -5,11 +5,15 @@ from apps.artists.album_serializer import AlbumSerializer
 from apps.tracks.track_serializer import TrackSerializer
 
 class ArtistSerializer(serializers.ModelSerializer):
+    followers_count = serializers.SerializerMethodField()
     albums = AlbumSerializer(many=True, read_only=True)
     tracks = TrackSerializer(many=True, read_only=True, source='track_set')
     class Meta:
         model = Artist
-        fields = ('id', 'name', 'bio', 'avatar', 'user', 'albums', 'tracks')
+        fields = ('id', 'name', 'bio', 'avatar', 'user', 'albums', 'tracks', 'followers_count')
+
+    def get_followers_count(self, obj):
+        return obj.followers.count()
 
 class ArtistCreateSerializer(serializers.ModelSerializer):
     class Meta:

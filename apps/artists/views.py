@@ -1,6 +1,9 @@
 from rest_framework.generics import (ListAPIView, RetrieveAPIView, 
 CreateAPIView, UpdateAPIView, DestroyAPIView)
+from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 from apps.artists.models import Artist, Album
 from apps.artists.sevices import ArtistService
@@ -9,7 +12,7 @@ ArtistCreateSerializer, ArtistUpdateSerializer)
 from apps.artists.album_serializer import (AlbumSerializer,
 AlbumCreateSerializer, AlbumUpdateSerializer)
 
-from apps.users.models import User
+from apps.users.models import User, Follow
 from apps.users.permissions import IsOwner, IsAdmin, IsArtist, IsModerator
 
 class ArtistListAPIView(ListAPIView):
@@ -63,6 +66,22 @@ class SearchAristsView(ListAPIView):
         query = self.request.GET.get('query', '')
         page = self.request.GET.get('page', 1)
         return ArtistService.search_artist(query, int(page))
+
+class CheckFollowAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, pk):
+        user_id = request.GET.get('user_id')
+        if not user_id:
+            return Response({'is_following': False})
+        
+        artist = get_object_or_404(Artist, pk=pk)
+        is_following = Follow.objects.filter(
+            follower_id=user_id, 
+            following=artist
+        ).exists()
+        
+        return Response({'is_following': is_following})
     
 class AlbumListAPIView(ListAPIView):
     queryset = Album.objects.all()

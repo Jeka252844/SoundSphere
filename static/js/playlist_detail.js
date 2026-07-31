@@ -137,11 +137,10 @@ async function renderPlaylist(data, token) {
         navigator.clipboard.writeText(window.location.href).then(() => alert('Ссылка скопирована'));
     });
 
-    // Клик по треку → плеер
     document.addEventListener('click', (e) => {
         const row = e.target.closest('.track-row');
         if (row?.dataset.trackId) {
-            window.location.href = `/player/?track_id=${row.dataset.trackId}`;
+            window.location.href = `/track/card/${row.dataset.trackId}/`;
         }
     });
 }

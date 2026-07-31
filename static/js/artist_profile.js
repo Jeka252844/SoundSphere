@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
             isOwner = true;
-            renderArtistProfile(artist, isOwner);
+            renderArtistProfile(artist, isOwner, token);
 
         } catch (err) {
             console.log(err)
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
-            renderArtistProfile(artist, isOwner);
+            renderArtistProfile(artist, isOwner, token);
 
         } catch (err) {
             console.log(err);
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
-function renderArtistProfile(artist, isOwner) {
+async function renderArtistProfile(artist, isOwner, token) {
     document.getElementById('artistName').textContent = artist.name;
     document.getElementById('artistBio').textContent = artist.bio || 'Описания пока нет';
     document.getElementById('artistFollowers').textContent = `${artist.followers_count || 0} подписчиков`;
@@ -144,7 +144,37 @@ function renderArtistProfile(artist, isOwner) {
             avatarContainer.innerHTML = `<img src="${data.avatar}" class="artist-avatar" alt="">`;
         }
     });
+    
+    // Поделиться
+    document.getElementById('shareBtn').addEventListener('click', () => {
+        const shareUrl = isOwner 
+            ? `${window.location.origin}/artist/${artist.id}/`
+            : window.location.href;
+        navigator.clipboard.writeText(shareUrl).then(() => alert('Ссылка скопирована'));
+    });
 
+    // Альбомы
+    const albumsList = document.getElementById('albumsList');
+    if (artist.albums && artist.albums.length > 0) {
+        albumsList.innerHTML = artist.albums.map(album => `
+            <div class="track-row" data-album-id="${album.id}">
+                ${album.cover ? `<img src="${album.cover}" class="track-row-cover" alt="">` : getDefaultCoverSVG('50','50','8')}
+                <div class="track-row-info">
+                    <div class="track-row-title">${escapeHtml(album.title)}</div>
+                    <div class="track-row-artist">${album.release_date || ''}</div>
+                </div>
+            </div>
+        `).join('');
+    } else {
+        albumsList.innerHTML = '<p class="p-3">Нет альбомов</p>';
+    }
+
+    document.addEventListener('click', (e) => {
+        const row = e.target.closest('.track-row');
+        if (row?.dataset.albumId) {
+            window.location.href = `/album/${row.dataset.albumId}/`;
+        }
+    });
 
     // КНОПКИ
     const actionsDiv = document.querySelector('.artist-actions');
@@ -220,6 +250,13 @@ function renderArtistProfile(artist, isOwner) {
                 errorDiv.style.display = 'block';
             }
         });
+
+        const createAlbumBtn = document.createElement('button');
+        createAlbumBtn.className = 'btn btn-outline-secondary btn-sm mt-2';
+        createAlbumBtn.innerHTML = '<i class="fas fa-plus"></i> Создать альбом';
+        createAlbumBtn.onclick = () => window.location.href = '/album/create/';
+        albumsList.parentElement.appendChild(createAlbumBtn);
+
     } else {
         actionsDiv.innerHTML = `
             <button class="btn btn-primary btn-sm" id="followBtn">
@@ -234,7 +271,7 @@ function renderArtistProfile(artist, isOwner) {
         document.getElementById('followBtn').addEventListener('click', async () => {
             const token = localStorage.getItem('access_token');
             if (!token) return alert('Войдите чтобы подписаться');
-            const res = await fetch(`/api/artists/${artist.id}/follow/`, {
+            const res = await fetch(`/users/${artist.id}/follow/`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -245,43 +282,19 @@ function renderArtistProfile(artist, isOwner) {
                     : '<i class="fas fa-user-plus"></i> Подписаться';
         });
     }
-    
-    // Поделиться
-    document.getElementById('shareBtn').addEventListener('click', () => {
-        const shareUrl = isOwner 
-            ? `${window.location.origin}/artist/${artist.id}/`
-            : window.location.href;
-        navigator.clipboard.writeText(shareUrl).then(() => alert('Ссылка скопирована'));
-    });
 
-    // Альбомы
-    const albumsList = document.getElementById('albumsList');
-    if (artist.albums && artist.albums.length > 0) {
-        albumsList.innerHTML = artist.albums.map(album => `
-            <div class="track-row" data-album-id="${album.id}">
-                ${album.cover ? `<img src="${album.cover}" class="track-row-cover" alt="">` : getDefaultCoverSVG('50','50','8')}
-                <div class="track-row-info">
-                    <div class="track-row-title">${escapeHtml(album.title)}</div>
-                    <div class="track-row-artist">${album.release_date || ''}</div>
-                </div>
-            </div>
-        `).join('');
-    } else {
-        albumsList.innerHTML = '<p class="p-3">Нет альбомов</p>';
+    if (!isOwner && token) {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const userId = payload.user_id;
+            const followRes = await fetch(`/api/artists/${artist.id}/follow/check/?user_id=${userId}`);
+            const followData = await followRes.json();
+            
+            if (followData.is_following) {
+                document.getElementById('followBtn').innerHTML = '<i class="fas fa-check"></i> Вы подписаны';
+            }
+        } catch(e) {}
     }
-
-    document.addEventListener('click', (e) => {
-        const row = e.target.closest('.track-row');
-        if (row?.dataset.albumId) {
-            window.location.href = `/album/${row.dataset.albumId}/`;
-        }
-    });
-
-    const createAlbumBtn = document.createElement('button');
-    createAlbumBtn.className = 'btn btn-outline-secondary btn-sm mt-2';
-    createAlbumBtn.innerHTML = '<i class="fas fa-plus"></i> Создать альбом';
-    createAlbumBtn.onclick = () => window.location.href = '/album/create/';
-    albumsList.parentElement.appendChild(createAlbumBtn);
 }
 
 function getUserId(token) {

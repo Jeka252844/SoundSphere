@@ -4,14 +4,14 @@ from apps.artists.models import Artist
 
 class ArtistService:
     @staticmethod
-    def get_top_artists(page=1, limit=50):
+    def get_top_artists(page=1, limit=10):
         offset = (page-1) * limit
         return Artist.objects.annotate(
             followers_count = Count('followers')
         ).order_by('-followers_count')[offset:offset + limit]
     
     @staticmethod
-    def search_artist(query='', page = 1, limit = 50):
+    def search_artist(query='', page = 1, limit = 10):
         offset = (page-1) * limit
         return Artist.objects.filter(name__icontains = query).annotate(
             followers_count = Count('followers')

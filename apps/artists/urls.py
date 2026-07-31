@@ -1,7 +1,7 @@
 from django.urls import path
 
 from apps.artists.views import (ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView,
-ArtistDeleteAPIView, ArtistUpdateAPIView, SearchAristsView, GetTopArtistsView,
+ArtistDeleteAPIView, ArtistUpdateAPIView, SearchAristsView, GetTopArtistsView, CheckFollowAPIView,
 AlbumCreateAPIView, AlbumDetailAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView, AlbumListAPIView)
 
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('<int:pk>/delete/', ArtistDeleteAPIView.as_view(), name='artist_delete'),
     path('top/', GetTopArtistsView.as_view(), name='top_artists'),
     path('search/', SearchAristsView.as_view(), name='search_artists'),
+    path('<int:pk>/follow/check/', CheckFollowAPIView.as_view(), name='check-follow'),
 
     # album
     path('album/list/', AlbumListAPIView.as_view(), name="album_list"),

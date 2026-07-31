@@ -62,6 +62,13 @@ async function renderTrackCard(track, token) {
         } catch(e) {}
     }
 
+    document.querySelector('.track-detail-artist').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (track.artist_id) {
+            window.location.href = `/artist/${track.artist_id}/`;
+        }
+    });
+
     // Кнопка слушать
     document.querySelector('.btn-listen-main').addEventListener('click', () => {
         window.location.href = `/player/?track_id=${track.id}`;

@@ -71,24 +71,20 @@
                 </div>
 
                 <div class="side-panel-body">
-                    <a href="/profile/" class="panel-link">
-                        <i class="fas fa-user"></i> Профиль
-                    </a>
+                    <a href="/profile/" class="panel-link">Профиль</a>
+                    <a href="{% url 'home' %}" class="panel-link">Главная</a>
+                    <a href="{% url 'tracks' %}" class="panel-link">Треки</a>
+                    <a href="{% url 'playlist' %}" class="panel-link">Плейлисты</a>
+                    <a href="{% url 'artists' %}" class="panel-link">Исполнители</a>
                     {% comment %} <a href="#" class="panel-link locked">
                         <i class="fas fa-bell"></i> Уведомления
                     </a> {% endcomment %}
-                    <a href="/playlist/my/" class="panel-link auth-required locked">
-                        <i class="fas fa-list"></i> Мои плейлисты
-                    </a>
-                    <a href="{% url 'artist_profile_my' %}" class="panel-link locked">
-                        <i class="fas fa-microphone"></i> Профиль артиста
-                    </a>
+                    <a href="/playlist/my/" class="panel-link auth-required locked"> Мои плейлисты</a>
+                    <a href="{% url 'artist_profile_my' %}" class="panel-link locked">Профиль артиста</a>
                     {% comment %} <a href="#" class="panel-link locked">
                         <i class="fas fa-users"></i> Друзья
                     </a> {% endcomment %}
-                    <a href="#" class="panel-link admin-link" id="adminPanelLink" style="display:none;">
-                        <i class="fas fa-shield-alt"></i> Панель управления
-                    </a>
+                    <a href="#" class="panel-link admin-link" id="adminPanelLink" style="display:none;">Панель управления</a>
                 </div>
 
                 <div class="side-panel-footer">

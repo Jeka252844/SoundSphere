@@ -19,21 +19,32 @@ venv\Scripts\activate
 pip install -r requirements.txt
 
 # 3. Миграции
+<<<<<<< HEAD
 python manage.py makemigrations users tracks artists analitics social
+=======
+python manage.py makemigrations
+>>>>>>> bc1034b512bec26632714668f1629c8caaf400ad
 python manage.py migrate
 
 # 4. Тестовые данные
 python test_data.py
 
+<<<<<<< HEAD
 # 5. Создание администратора(если нет)
+=======
+# 5. Создание администратора
+>>>>>>> bc1034b512bec26632714668f1629c8caaf400ad
 python manage.py createsuperuser
 
 # 6. Запуск
 .\run.bat
 ```
 
+<<<<<<< HEAD
 Регистрация проходит с использование верефикации email. Ссылка подтверждения отправляется в терминал.
 
+=======
+>>>>>>> bc1034b512bec26632714668f1629c8caaf400ad
 Права доступа
 
 - **IsAdmin** — полный доступ (роль admin)

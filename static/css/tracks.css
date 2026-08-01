@@ -1,0 +1,383 @@
+.search-section {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 30px;
+    padding: 0;
+}
+
+.search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    padding: 4px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    width: 100%;
+}
+
+.search-bar:focus-within {
+    border-color: #1db954;
+    box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.15);
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 16px;
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.search-bar input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 12px 16px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.search-bar input::placeholder {
+    color: #6b7280;
+}
+
+.btn-clear {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.btn-clear:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-clear svg {
+    width: 14px;
+    height: 14px;
+    color: #9ca3af;
+}
+
+/* --- Выпадающий список поиска --- */
+.search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: rgba(10, 28, 20, 0.98);
+    border: 1px solid #1db954;
+    border-radius: 8px;
+    margin-top: 8px;
+    z-index: 100;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    display: none;
+    overflow: hidden;
+}
+
+.search-dropdown.active {
+    display: block;
+}
+
+.dropdown-header {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(9, 46, 32, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dropdown-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(29, 185, 84, 0.15);
+    color: #1db954;
+}
+
+/* --- Фильтр по жанрам (чипсы, как у исполнителей) --- */
+.search-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 0;
+}
+
+.filter-tag {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #b3b3b3;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-tag:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.filter-tag.active {
+    background: #1db954;
+    border-color: #1db954;
+    color: #ffffff;
+}
+
+/* --- Секции (единая ширина с поиском) --- */
+.section-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 30px;
+    padding: 0;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+/* --- Список треков (ТОЧНО КАК У ИСПОЛНИТЕЛЕЙ) --- */
+.track-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.track-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.track-row:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.track-row:hover {
+    background: rgba(29, 185, 84, 0.08);
+}
+
+.track-row-cover {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.track-row-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.track-row-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-row-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-row-artist {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-row-artist:hover {
+    color: #1db954;
+}
+
+.track-row-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.track-badge {
+    font-size: 0.75rem;
+    color: #1db954;
+    background: rgba(29, 185, 84, 0.1);
+    padding: 3px 10px;
+    border-radius: 50px;
+    white-space: nowrap;
+}
+
+.track-stat {
+    font-size: 0.78rem;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+.default-cover-svg {
+    display: block;
+    background: #0A1C14;
+}
+
+.track-time {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    font-variant-numeric: tabular-nums;
+    min-width: 36px;
+    text-align: right;
+}
+
+/* --- Результаты поиска (ТОЧНО КАК У ИСПОЛНИТЕЛЕЙ) --- */
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.result-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.result-card:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.result-card:hover {
+    background: rgba(29, 185, 84, 0.08);
+}
+
+.result-cover {
+    width: 44px;
+    height: 44px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.result-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.result-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.result-artist {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+/* --- Адаптивность --- */
+@media (max-width: 768px) {
+    .track-row-meta {
+        gap: 8px;
+    }
+    
+    .track-stat {
+        display: none;
+    }
+    
+    .track-row {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+    
+    .track-row-cover {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .search-bar input {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .track-badge {
+        display: none;
+    }
+    
+    .track-row-cover {
+        width: 38px;
+        height: 38px;
+    }
+    
+    .track-row {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+    }
+    
+    .search-bar input {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+}

@@ -1,16 +1,32 @@
 from django.urls import path
 
-from apps.artists.views import (ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView,
-ArtistDeleteAPIView, ArtistUpdateAPIView, SearchAristsView, GetTopArtistsView)
+from apps.artists.views import (
+    ArtistListAPIView, ArtistDetailAPIView, ArtistCreateAPIView,
+    ArtistDeleteAPIView, ArtistUpdateAPIView, SearchAristsView, GetTopArtistsView, CheckFollowAPIView,
+    AlbumCreateAPIView, AlbumDetailAPIView, AlbumDeleteAPIView, AlbumUpdateAPIView, AlbumListAPIView,
+    AlbumLikeAPIView, AlbumLikeCheckAPIView
+)
+
 
 app_name = 'artists'
 
 urlpatterns = [
-    path('', ArtistListAPIView.as_view(), name='artist_list'),
+    # artist
+    path('list/', ArtistListAPIView.as_view(), name='artist_list'),
     path('<int:pk>/', ArtistDetailAPIView.as_view(), name='artist_detail'),
     path('create/', ArtistCreateAPIView.as_view(), name='artist_create'),
     path('update/', ArtistUpdateAPIView.as_view(), name='artist_update'),
     path('<int:pk>/delete/', ArtistDeleteAPIView.as_view(), name='artist_delete'),
     path('top/', GetTopArtistsView.as_view(), name='top_artists'),
     path('search/', SearchAristsView.as_view(), name='search_artists'),
+    path('<int:pk>/follow/check/', CheckFollowAPIView.as_view(), name='check-follow'),
+
+    # album
+    path('album/list/', AlbumListAPIView.as_view(), name="album_list"),
+    path('album/<int:pk>/', AlbumDetailAPIView.as_view(), name="album_detail"),
+    path('album/create/', AlbumCreateAPIView.as_view(), name='album_create'),
+    path('album/<int:pk>/update/', AlbumUpdateAPIView.as_view(), name='album_update'),
+    path('album/<int:pk>/delete/', AlbumDeleteAPIView.as_view(), name='album_delete'),
+    path('album/like/<int:pk>/', AlbumLikeAPIView.as_view(), name='album_like'),
+    path('album/like/<int:pk>/check/', AlbumLikeCheckAPIView.as_view(), name='album_like_check'),
 ]

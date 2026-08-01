@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <link rel="stylesheet" href="{% static 'css/tracks.css' %}">
+    <script src="{% static 'js/tracks.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<section class="search-section">
+    <div class="search-wrapper" id="searchWrapper">
+        <div class="search-bar">
+            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="searchInput" placeholder="Поиск треков" autocomplete="off" />
+            <button id="clearSearch" class="btn-clear" style="display: none;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        {% comment %} <div class="search-dropdown" id="searchDropdown">
+            <div class="dropdown-header">Популярные запросы</div>
+        </div> {% endcomment %}
+    </div>
+</section>
+
+<div id="defaultContent">
+    <section class="section-container">
+        <h2 class="section-title">🔥 Популярное сейчас</h2>
+        <div class="track-list">
+            {% for track in tracks %}
+            <div class="track-row">
+                <img src="{{track.cover}}" class="track-row-cover" alt="Cover">
+                <div class="track-row-info">
+                    <div class="track-row-title">{{track.title}}</div>
+                    <div class="track-row-artist">{{track.artist.name}}</div>
+                </div>
+                <div class="track-row-meta">
+                    <span class="track-badge">{{track.genre.name}}</span>
+                    <span class="track-stat">{{track.play}}</span>
+                    <span class="track-time">{{track.duration}}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<div id="searchResults" style="display: none;">
+    <section class="section-container">
+        <h2 class="section-title">Результаты поиска</h2>
+        <div class="track-list" id="searchResultsList">
+
+        </div>
+    </section>
+</div>
+
+{% endblock content %}

@@ -2,23 +2,48 @@ from rest_framework import serializers
 from mutagen import File as MutagenFile
 
 from apps.tracks.models import Track, Genre
-from apps.artists.models import Album, Artist
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ('id', 'name', 'display', 'slug')
+
 
 class TrackSerializer(serializers.ModelSerializer):
+    artist_name = serializers.CharField(source='artist.name', read_only=True)
+    artist_id = serializers.IntegerField(source='artist.id', read_only=True)
+    genre_name = serializers.CharField(source='genre.name', read_only=True)
+    weekly_plays = serializers.IntegerField(read_only=True, default=0)
+    likes_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Track
-        fields = ('id', 'title', 'artist', 'album', 'cover', 'audio_file', 'genre', 'duration', 'plays_count', 'created_at')
+        fields = (
+            'id', 'title', 'duration', 'plays_count', 'cover',
+            'audio_file', 'created_at',
+            # Вложенные
+            'artist_id', 'artist_name',
+            'album', 'genre_name',
+            # Статистика
+            'weekly_plays', 'likes_count'
+        )
+
+    def get_likes_count(self, obj):
+        return obj.track_likes.count()
 
 
 class TrackCreateSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(required=True)
-    audio_file = serializers.FileField(required=True)
-    album = serializers.PrimaryKeyRelatedField(queryset= Album.objects.all(), required= False, allow_null= True)
-    genre = serializers.PrimaryKeyRelatedField(queryset= Genre.objects.all(), required= False, allow_null= True)
-    cover = serializers.ImageField(required= False)
     class Meta:
         model = Track
         fields = ('title', 'album', 'genre', 'cover', 'audio_file')
+        extra_kwargs = {
+            'title': {'required': True},
+            'album': {'required': True},
+            'genre': {'required': True},
+            'audio_file': {'required': True},
+            'cover': {'required': False},
+        }
 
     def create(self, validated_data):
         audio = validated_data['audio_file']
@@ -26,10 +51,11 @@ class TrackCreateSerializer(serializers.ModelSerializer):
             try:
                 audio_info = MutagenFile(audio)
                 validated_data['duration'] = int(audio_info.info.length)
-            except:
+            except Exception:
                 validated_data['duration'] = 0
         return super().create(validated_data)
-    
+
+
 class TrackUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
@@ -48,7 +74,7 @@ class TrackUpdateSerializer(serializers.ModelSerializer):
         if audio:
             try:
                 audio_info = MutagenFile(audio)
-                validated_data['duration']= int(audio_info.info.length)
-            except:
+                validated_data['duration'] = int(audio_info.info.length)
+            except Exception:
                 validated_data['duration'] = 0
         return super().update(instance, validated_data)

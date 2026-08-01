@@ -1,8 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+import uuid
 
 from apps.artists.models import Artist
+from apps.tracks.models import Track
+
 
 class User(AbstractUser):
     ROLE_CHOICES = [
@@ -10,12 +13,13 @@ class User(AbstractUser):
         ('moderator', 'Модератор'),
         ('user', 'Пользователь'),
     ]
-    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, verbose_name=_("Аватар"))
-    email = models.EmailField(unique=True, null=True)
-    phone_number = models.CharField(max_length=12, unique=True, null=True, verbose_name=_('номер телефона'))
+    avatar = models.ImageField(upload_to='avatars/', default=None, null=True, blank=True, verbose_name=_("Аватар"))
+    email = models.EmailField(unique=True, null=True, blank=True)
+    phone_number = models.CharField(max_length=12, unique=True, null=True, blank=True, verbose_name=_('номер телефона'))
     bio = models.TextField(max_length=300, blank=True, verbose_name=_('Биография'))
     is_artist = models.BooleanField(default=False, verbose_name=_('Артист'))
-    user_role  = models.CharField(max_length=15, default='user', choices=ROLE_CHOICES, verbose_name=_("Роль"))
+    user_role = models.CharField(max_length=15, default='user', choices=ROLE_CHOICES, verbose_name=_("Роль"))
+
     class Meta:
         verbose_name = _("Пользователь")
         verbose_name_plural = _("Пользователи")
@@ -25,26 +29,71 @@ class User(AbstractUser):
         ]
         ordering = ['-date_joined']
 
+    def __str__(self) -> str:
+        return self.username
+
+
+class EmailVerificationToken(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    token = models.UUIDField(default=uuid.uuid4, unique=True, verbose_name='токен')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+
+    class Meta:
+        verbose_name = 'Токен подтверждения почты'
+        verbose_name_plural = 'Токены подтверждения почты'
+
+    def __str__(self):
+        return f'{self.user.email}'
+
 
 class PlayList(models.Model):
-    name = models.CharField(max_length=200, verbose_name=_("Название плэйлиста"))
-    user = models.ForeignKey(User, related_name='playlist', on_delete=models.CASCADE, verbose_name=_("Пользователь"))
-    is_public = models.BooleanField(default=True, verbose_name=_("Публичный"))
+    title = models.CharField(max_length=200, verbose_name=_("Название плейлиста"))
+    user = models.ForeignKey(User, related_name='playlists', on_delete=models.CASCADE, verbose_name=_("Пользователь"))
+    is_public = models.BooleanField(default=False, verbose_name=_("Публичный"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
 
     class Meta:
-        verbose_name = _("Плэйлист")
-        verbose_name_plural = _("Плайлисты")
+        unique_together = ['title', 'user']
+        verbose_name = _("плейлист")
+        verbose_name_plural = _("плейлисты")
         indexes = [
             models.Index(fields=['user', '-created_at'])
         ]
         ordering = ['-created_at']
 
+    def __str__(self) -> str:
+        return self.title
+
+
+class PlayListTrack(models.Model):
+    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='playlist_track', verbose_name="трек")
+    playlist = models.ForeignKey(PlayList, on_delete=models.CASCADE, related_name='playlist_track', verbose_name='плейлист')
+
+    class Meta:
+        verbose_name = 'Трэк в плейлисте'
+        verbose_name_plural = 'Треки в плейлисте'
+        unique_together = ['track', 'playlist']
+
+
+class PlayListLike(models.Model):
+    playlist = models.ForeignKey(PlayList, on_delete=models.CASCADE, related_name='playlist_like', verbose_name='плейлист')
+    user = models.ForeignKey(User, related_name='playlist_like', on_delete=models.CASCADE, verbose_name=_("Пользователь"))
+    liked_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Лайк в плейлиста'
+        verbose_name_plural = 'Лайк в плейлистов'
+        unique_together = ['playlist', 'user']
+
+    def __str__(self):
+        return f'{self.user.username} liked {self.playlist.title}'
+
+
 class Follow(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', verbose_name=_('Подписчик'))
     following = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='followers', verbose_name=_("Подписан на"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Дата создания"))
-    
+
     class Meta:
         verbose_name = _("Подписчик")
         verbose_name_plural = _("Подписчики")

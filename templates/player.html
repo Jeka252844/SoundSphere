@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+    <link rel="stylesheet" href="{% static 'css/player.css' %}">
+    <script src="{% static 'js/player.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<script>
+    let TRACKS_LIST = JSON.parse('{{ tracks_list|default:"[]"|safe }}');
+</script>
+
+<div class="container">
+    <div class="audio-player" data-track-id="{{track.id}}"> 
+        <!-- Track Info -->
+        <div class="track-info">
+            <div class="track-image"></div>
+            <div>
+                <div class="marquee">
+                    <span class="h5 mb-1">{{track.title}}</span>
+                </div>
+                <p class="text-muted mb-0">{{track.album}} • Album Name</p>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress"></div>
+            <div class="progress-handle"></div>
+        </div>
+
+        <!-- Time Info -->
+        <div class="d-flex justify-content-between time-info">
+            <span>0:00</span>
+            <span>0:00</span>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="control-button">
+                <i class="fas fa-random fa-lg"></i>
+            </button>
+            <button class="control-button">
+                <i class="fas fa-step-backward fa-lg"></i>
+            </button>
+            <button class="play-button">
+                <i class="fas fa-play fa-lg"></i>
+            </button>
+            <button class="control-button">
+                <i class="fas fa-step-forward fa-lg"></i>
+            </button>
+            <div class="volume-control">
+                <button class="control-button">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <div class="volume-slider">
+                    <div class="volume-level"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

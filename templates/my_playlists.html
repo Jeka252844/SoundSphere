@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+  <link rel="stylesheet" href="{% static 'css/playlist.css' %}">
+  <script src="{% static 'js/my_playlists.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<section class="section-container">
+  <h2 class="section-title">Мои плейлисты</h2>
+  <div id='userPlaylists' class="playlists-grid">
+    
+  </div>
+</section>
+{% endblock content %}

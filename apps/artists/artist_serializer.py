@@ -1,12 +1,22 @@
 from rest_framework import serializers
 
 from apps.artists.models import Artist
-from apps.users.models import User
+from apps.artists.album_serializer import AlbumSerializer
+from apps.tracks.track_serializer import TrackSerializer
+
 
 class ArtistSerializer(serializers.ModelSerializer):
+    followers_count = serializers.SerializerMethodField()
+    albums = AlbumSerializer(many=True, read_only=True)
+    tracks = TrackSerializer(many=True, read_only=True, source='track_set')
+
     class Meta:
         model = Artist
-        fields = ('name', 'bio', 'avatar', 'user')
+        fields = ('id', 'name', 'bio', 'avatar', 'user', 'albums', 'tracks', 'followers_count')
+
+    def get_followers_count(self, obj):
+        return obj.followers.count()
+
 
 class ArtistCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,7 +30,8 @@ class ArtistCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return super().create(validated_data)
-    
+
+
 class ArtistUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist

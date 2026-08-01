@@ -32,7 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # base
+    'daphne',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,17 +44,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
-    # 'corsheaders',
     'drf_yasg',
-    # 'channels',
+    'channels',
 
     # apps
     'apps.users',
     'apps.tracks',
     'apps.artists',
-    # 'apps.player',
-    # 'apps.social',
-    # 'apps.analitics',
+    'apps.player',
+    'apps.social',
+    'apps.analitics',
 
 ]
 
@@ -72,7 +72,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,16 +86,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+ASGI_APPLICATION = 'config.asgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# ===============
+# Бд для тестов
+# ===============
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # DATABASES = {
 #     'default':{
@@ -108,6 +114,12 @@ DATABASES = {
 #     }
 # }
 
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -143,11 +155,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'soundsphere@mail.ru'
+SITE_URL = 'http://127.0.0.1:8000'
+EMAIL_USE_LOCALTIME = True
 
-STATiC_DIRS = [
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -157,11 +175,21 @@ MEDIA_ROOT = BASE_DIR / 'media'
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ('django_filters.rest_framework.DjangoFilterBackend',),
     "DEFAULT_AUTHENTICATION_CLASSES": ('rest_framework_simplejwt.authentication.JWTAuthentication',),
-    # "DEFAULT_PERMISSION_CLASSES": ('rest_framework.permissions.IsAuthenticated',),
     "DEFAULT_PERMISSION_CLASSES": ('rest_framework.permissions.AllowAny',),
 }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': False,
 }

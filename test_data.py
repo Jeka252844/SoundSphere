@@ -227,7 +227,7 @@ def run():
     print(f'Прослушивания: {listen_count}')
 
     User.objects.get_or_create(
-        name='admin',
+        username='admin',
         user_role='admin',
         email='admin@ad.ad',
         password='admin123'

@@ -226,19 +226,10 @@ def run():
             pass
     print(f'Прослушивания: {listen_count}')
 
-<<<<<<< HEAD
     if not User.objects.filter(username='admin').exists():
         admin_user = User.objects.create_superuser('admin', 'admin@ad.ad', 'admin123')
         admin_user.user_role = 'admin'
         admin_user.save()
-=======
-    User.objects.get_or_create(
-        username='admin',
-        user_role='admin',
-        email='admin@ad.ad',
-        password='admin123'
-    )
->>>>>>> bc1034b512bec26632714668f1629c8caaf400ad
 
     print('\nГОТОВО! Можно зайти как:')
     print('имя: artist_1, пароль: artist123. артист с песней, альбомом и плейлистом')

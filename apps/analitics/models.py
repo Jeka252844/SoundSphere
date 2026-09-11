@@ -38,7 +38,7 @@ class ShareToken(models.Model):
     user = models.ForeignKey('users.User', related_name='share_token', on_delete=models.CASCADE , verbose_name=_('пользователь'))
     token = models.UUIDField(default=uuid4, unique=True, verbose_name=_('Токен'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Время создания"))
-    is_active = models.BooleanField(default=True, verbose_name=_('Активен'))
+    expires_at = models.DateTimeField(verbose_name=_("Время умирания"))
 
     class Meta:
         verbose_name = _("Токен")
@@ -54,7 +54,7 @@ class ShareToken(models.Model):
 class DailyStats(models.Model):
     user = models.ForeignKey('users.User', related_name='daily_stats', on_delete=models.CASCADE , verbose_name=_('пользователь'))
     date = models.DateField(verbose_name=_('дата'))
-    listens_count = models.IntegerField(default=0, verbose_name=_('колличество прослушиваний'))
+    listened_count = models.IntegerField(default=0, verbose_name=_('колличество прослушиваний'))
     unique_tracks = models.IntegerField(default=0, verbose_name=_('Колличество треков'))
     total_duration = models.IntegerField(default=0, verbose_name=_('время прослушивания'))
 
